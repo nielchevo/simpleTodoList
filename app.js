@@ -3,11 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var mongoose = require('mongoose');
 var indexRouter = require('./app/routes/index');
 var usersRouter = require('./app/routes/users');
 
 var app = express();
+
+/* Mongodb Setup */
+var mongoURL = 'localhost:27017';
+var dbName = 'simpleTodoList'
+
+mongoose.connect('mongodb://'+ mongoURL +'/'+ dbName, {useNewUrlParser: true} );
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, "[DB Connection ERROR] MongoDB Connection error !!"));
 
 // view engine setup
 app.set('views', path.join(__dirname, './app/views'));
