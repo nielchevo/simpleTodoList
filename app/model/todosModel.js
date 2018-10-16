@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var todosSchema = new mongoose.Schema ({
+var todosSchema = new Schema ({
     title           : {type: String },
     date_of_created : {type: Date, default: Date.now},
     list            : [{
