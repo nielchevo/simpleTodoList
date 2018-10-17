@@ -61,11 +61,11 @@ exports.get_todo_create = function(req, res, next) {
 }
 
 // Delete Todo
-exports.get_todo_delete = function(req, res, next) {
+exports.post_todo_delete = function (req, res, next) {
 
 }
 
-exports.post_todo_delete = function(req, res, next) {
+exports.get_todo_delete = function(req, res, next) {
 
 }
 
