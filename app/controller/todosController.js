@@ -33,14 +33,12 @@ exports.post_todo_create = [
     body('userId', 'User must not be empty.').isLength({ min:1 }).trim(),
     body('list').trim(),
     body('date_of_created').optional({checkFalsy: true}).isISO8601(),
-    body('isDone').isBoolean(),
     body('visible').isBoolean(),
 
     sanitizeBody('title').trim().escape(),
     sanitizeBody('userId').trim().escape(),
     sanitizeBody('list').trim().escape(),
     sanitizeBody('date_of_created').toDate(),
-    sanitizeBody('isDone').toBoolean(),
     sanitizeBody('visible').toBoolean(),
 
     (req, res, next) => {
@@ -50,8 +48,7 @@ exports.post_todo_create = [
             title           : req.body.title,
             date_of_created : req.body.date_of_created,
             list            : [{
-                                content: req.body.list,
-                                isDone : req.body.isDone
+                                content: req.body.list
                             }],
             userId          : req.body.userId,
             isPublic        : req.body.visible
