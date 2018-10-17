@@ -11,17 +11,20 @@ router.get('/', function(req, res, next) {
 // GET list todos
 router.get('/todos', todosController.get_todos_lists);
 
-// GET detail of a todo
-router.get('/todo/:id', todosController.get_todos_detail);
 
 // POST create a todo
+router.get('/todo/create', todosController.get_todo_create);
 router.post('/todo/create', todosController.post_todo_create);
 
+// POST todo delete
+router.get('/todo/delete', todosController.get_todo_delete);
+router.post('/todo/delete', todosController.post_todo_delete);
+
 // POST update todo
+router.get('/todo/:id/update', todosController.get_todo_modify);
 router.post('/todo/:id/update', todosController.post_todo_modify);
 
-// POST todo delete
-router.post('/todo/:id/delete', todosController.post_todo_delete);
-
+// GET Single detail of a todo
+router.get('/todo/:id', todosController.get_todos_detail);
 
 module.exports = router;

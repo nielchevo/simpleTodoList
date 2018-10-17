@@ -1,15 +1,15 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let Schema = mongoose.Schema;
 
-var todosSchema = new Schema ({
+let todosSchema = new Schema ({
     title           : {type: String },
     date_of_created : {type: Date, default: Date.now},
     list            : [{
-        content: { type: String },
-        done: {type: Boolean, default: false}
-    }],
-    user            : {type: Schema.Types.ObjectId, ref: 'User', required: true },
+                        content: { type: String },
+                        isDone:  { type: Boolean, default: false}
+                      }],
+    userId          : {type: Schema.ObjectId, ref: 'User', required: true },
     isPublic        : {type: Boolean, default : false}
 });
 
-module.exports = mongoose.model('ToDo', todosSchema );
+module.exports = mongoose.model('ToDo', todosSchema);

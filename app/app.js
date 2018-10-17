@@ -3,22 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mongoose = require('mongoose');
+const database = require('./config/dbConnect');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-
-/* Mongodb Setup */
-var mongoURL = 'localhost:27017';
-var dbName = 'simpleTodoList'
-
-mongoose.connect('mongodb://'+ mongoURL +'/'+ dbName, {useNewUrlParser: true} );
-mongoose.Promise = global.Promise;
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, "[DB Connection ERROR] MongoDB Connection error !!"));
 
 // Midleware
 app.use(logger('dev'));
@@ -31,7 +22,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(validator());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
