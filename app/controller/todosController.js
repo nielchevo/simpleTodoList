@@ -21,28 +21,39 @@ exports.get_todos_lists = function(req, res, next) {
 exports.post_todo_create = [
     body('title').trim(),
     body('date_of_created').toDate(),
+    body('user', 'user should not be empty').isLength({min: 1}).trim(),
     body('list').trim(),
 
     sanitizeBody('title').trim().escape(),
     sanitizeBody('date_of_created').toDate(),
+    sanitizeBody('user').trim().escape(),
     sanitizeBody('list').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
 
-        var createNewTodo = new todosModel({
-            title: req.body.title,
+        let createTodo = new todosModel ({
+            title           : req.body.title,
             date_of_created : req.body.date_of_created,
-            list : req.body.list
+            list            : req.body.list,
+            user            : {type: Schema.Types.ObjectId, ref: 'User', required: true },
+            isPublic        : {type: Boolean, default : false}
         });
 
+        /* validate body input */
         if(!errors.isEmpty()) {
-            return next(res.send(errors.array()));
-        } else {
-            
+            res.status(400).send(errors.array());
+        }
+        else{
+            createTodo.save(function(err, success) { 
+                if(err){
+                    return next(res.status(400).send(err));
+                }
+                
+                res.status(201).send(sucess);
+            });
         }
     }
-
 ];
 
 exports.get_todo_create = function(req, res, next) {

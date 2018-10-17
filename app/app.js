@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+var validator = require('express-validator');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -18,11 +20,15 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, "[DB Connection ERROR] MongoDB Connection error !!"));
 
+// Midleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(validator());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

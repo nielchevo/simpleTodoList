@@ -6,9 +6,10 @@ var todosSchema = new Schema ({
     date_of_created : {type: Date, default: Date.now},
     list            : [{
         content: { type: String },
-        done: Boolean
+        done: {type: Boolean, default: false}
     }],
-    user            : {type: Schema.Types.ObjectId, ref: 'User', required: true }
+    user            : {type: Schema.Types.ObjectId, ref: 'User', required: true },
+    isPublic        : {type: Boolean, default : false}
 });
 
-module.exports = mongoose.model('ToDo', todosSchema, 'card');
+module.exports = mongoose.model('ToDo', todosSchema );
