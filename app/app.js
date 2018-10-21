@@ -1,15 +1,18 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const database = require('./config/dbConnect');
 var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+const database = require('./config/dbConnect');
+mongoose.connect(database.url);
 
 // Midleware
 app.use(logger('dev'));
