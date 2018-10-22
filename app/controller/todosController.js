@@ -9,7 +9,7 @@ var userModel = require('../model/userModel');
 exports.get_todos_lists = function(req, res, next) {
     async.parallel({
         // Async Tasks
-        todos: function(callback) {
+        Todos: function(callback) {
             todosModel.find()
                 .exec(callback);
         }
@@ -18,13 +18,21 @@ exports.get_todos_lists = function(req, res, next) {
         if(err) { return res.send(500).send(results); }
         
         // Success.HTTP 200 & todo results
-        return res.status(200).send(results.todos);
+        return res.status(200).send(results.Todos);
     });
 }
 
 // --------------  API Create ToDo --------------  
 exports.get_todo_create = function(req, res, next) {
-    return res.send('not yet implemented! (create todo)');
+    let loginDetail = req.params.loginDetail; // dummy var, waiting for login behavior 
+    
+    userModel.find({'username': new RegExp(loginDetail,'i')}, 'username _id', function(err, results) {
+        if(err){ 
+            return res.status(500).send(err); 
+        }
+        // Success, return username info
+        res.status(200).send(results);
+    });
 }
 
 exports.post_todo_create = [
