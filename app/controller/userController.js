@@ -84,7 +84,8 @@ exports.userLogin = function (req, res, next) {
     res.status(200).send({ auth: true, token: token });
 }
 
-// fail
+// okay
 exports.testProtected = function (req, res, next) {
-    console.log('testProtected: ', req.userId);
+    console.log('usercontroller testProtected: ', req.userId);
+    res.sendStatus(200);
 }

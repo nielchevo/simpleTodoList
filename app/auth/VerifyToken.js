@@ -8,14 +8,13 @@ function verifyToken(req, res, next) {
 
     const reqtoken = tokenHeader.split(' ');
     const token = reqtoken[1];
-    console.log('token ', token);
+    //console.log('token ', token);
 
     jwt.verify(token, configs.secret, function (err, decoded) {
         if (err)
             return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
 
-        console.log('verify token: ', decoded);
-        req.userId = decoded._id;
+        req.userId = decoded.user._id;
         next();
     });
 }
