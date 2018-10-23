@@ -9,7 +9,7 @@ let todosSchema = new Schema ({
                         isDone:  { type: Boolean, default: false}
                       }],
     userId          : {type: Schema.ObjectId, ref: 'User', required: true },
-    isPublic        : {type: Boolean, default : false}
+    isPublic        : {type: Boolean, default : true}
 });
 
 module.exports = mongoose.model('ToDo', todosSchema);

@@ -43,6 +43,7 @@ exports.post_todo_create = [
     body('date_of_created').optional({checkFalsy: true}).isISO8601(),
     body('visible').isBoolean(),
 
+    sanitizeBody('*').trim().escape(),
     sanitizeBody('title').trim().escape(),
     sanitizeBody('userId').trim().escape(),
     sanitizeBody('list').trim().escape(),
@@ -55,11 +56,8 @@ exports.post_todo_create = [
         let createTodo = new todosModel ({
             title           : req.body.title,
             date_of_created : req.body.date_of_created,
-            list            : [{
-                                content: req.body.list
-                            }],
+            list            : req.body.list,
             userId          : req.body.userId,
-            isPublic        : req.body.visible
         });
 
         if(!errors.isEmpty()) {
