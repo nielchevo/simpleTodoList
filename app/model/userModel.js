@@ -8,7 +8,7 @@ var UserSchema = new mongoose.Schema({
     password: {type: String, required: true}
 }, {timestamps: true});
 
-UserSchema.methods.getHash = function(parampassword) {
+UserSchema.methods.getHashSync = function(parampassword) {
     let salt = bcryptjs.genSaltSync(SALT_WORK_FACTOR);
     let password = bcryptjs.hashSync(parampassword, salt);
     if (password !== 'undefined') {
