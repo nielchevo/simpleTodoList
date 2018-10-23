@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 var UserSchema = new mongoose.Schema({
     username: {type: String, required: true, max: 50},
-    password: {type: String, required: true}
+    password: {type: String, required: true, min: 6}
 }, {timestamps: true});
 
 UserSchema.methods.getHashSync = function(parampassword) {

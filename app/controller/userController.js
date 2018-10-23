@@ -1,57 +1,61 @@
-const { check, validationResult } = require('express-validator/check');
+const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 const jwt = require('jsonwebtoken');
 const configs = require('../config/configs');
 var User = require('../model/userModel');
 
-exports.createUser = function (req, res, next) {
+exports.createUser = [
+    
     // validation still not working properly here
-    // check('username', 'Username is required').not().isEmpty();
-    // check('password', 'Password is required').not().isEmpty();
-    // check('password', 'Password character minimum must be 6').isLength({ min: 6 });
-    // check('passwordConf', 'Password Confirmation is required').not().isEmpty();
-    // check('passwordConf', 'Password Confirmation do not match').equals(req.body.password);
+    body('username', 'Username should not be empty !').isLength({min: 1}).trim(),
+    body('password', 'Password should not be empty !').isLength({min: 1}).trim(),
+    body('password', 'Password minimum must be 6 characters !').isLength({min: 6}).trim(),
+    body('passwordConf', 'Password Confirmation is required !').isLength({min: 1}).trim(),
+    
+    body('passwordConf').custom((value, {req}) =>{ 
+        if(value !== req.body.password) {
+            throw new Error('Password confirmation DO NOT match !');
+        }else{
+            return value;
+        }
+    }).trim(),
 
-    // sanitizeBody('username').trim().escape();
-    // sanitizeBody('password').trim().escape();
-
-    //const errors = validationResult(req);
-    // if (errors) {
-    //     console.log(errors);
-    //     res.status(400).json({errors: errors});
+    sanitizeBody('*').trim().escape(), //global sanitize
+    
+    (req, res, next) => {
+        const errors = validationResult(req);
         
-    // } else {
         let newUser = new User({
             username: req.body.username,
             password: req.body.password
         });
-    
-        newUser.password = newUser.getHashSync(req.body.password);
-    
-        newUser.save(function (err) {
-            if (err) {
-                //return res.status(500).send("Error registering user");
-                return next(err)
-            };
-            var token = jwt.sign({ 
-                user: {
-                    _id: newUser._id,
-                    username: newUser.username
-            }}, configs.secret, {
-                expiresIn: "8h"
-            });
 
-            // res.status(200).send({
-            //     user: {
-            //         _id: newUser._id,
-            //         username: newUser.username
-            //     }
-            // });
-            res.status(200).send({ auth: true, token: token });
-        });
-    //}    
-};
+        if (!errors.isEmpty()) {
+            return res.status(422).send(errors.array());
+            
+        } else {
+            newUser.password = newUser.getHashSync(req.body.password);
+        
+            newUser.save(function (err) {
+                if (err) {
+                    //return res.status(500).send("Error registering user");
+                    return next(err)
+                };
+
+                var token = jwt.sign({ 
+                    user: {
+                        _id: newUser._id,
+                        username: newUser.username
+                }}, configs.secret, {
+                    expiresIn: "8h"
+                });
+
+                res.status(201).send({ auth: true, token: token });
+            });
+       }
+    }
+];
 
 exports.get_createUser = function(req, res, next) { // buat opo
     console.log('test oyy');
