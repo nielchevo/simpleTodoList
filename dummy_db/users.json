@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5bc770604edacb27085ca26b"},"username":"niel","password":"123456"}
+{"_id":{"$oid":"5bcf5ca1fa09af21fc437d6a"},"username":"dummy_user","password":"$2a$10$OJjJ4ddFPYYZzaOfWyg4zOhMduPt0BPvDNJIUOiV6FBmyOxsNmMDO","createdAt":{"$date":{"$numberLong":"1540316321631"}},"updatedAt":{"$date":{"$numberLong":"1540316321631"}},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5bcf5cc4fa09af21fc437d6c"},"username":"nielchvo","password":"$2a$10$RMC9bgj68S/.nA7dwjBTcua1sEON6t5cWxV4IrR2Bxjb51iIZO8IK","createdAt":{"$date":{"$numberLong":"1540316356735"}},"updatedAt":{"$date":{"$numberLong":"1540316356735"}},"__v":{"$numberInt":"0"}}
