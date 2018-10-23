@@ -12,7 +12,6 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 const database = require('./config/dbConnect');
-mongoose.connect(database.url);
 
 // Midleware
 app.use(logger('dev'));
