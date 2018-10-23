@@ -80,7 +80,22 @@ exports.post_todo_create = [
 
 // --------------  API Delete ToDo --------------  
 exports.get_todo_delete = function(req, res, next) {
-    res.send('not yet implemented! (Delete Todo)');
+    let userSession = req.query.user; // user ObjectId temp variable, get from JWT auth.
+    
+    async.parallel({
+        // Async Tasks
+        Todo: function(callback) {
+            todosModel.find({'userId': userSession})
+                .exec(callback);
+        }
+    }, function(err, results) {
+        // Async Callback
+        if(err) {
+            return res.status(500).send(err); 
+        }
+        
+        res.status(200).send(results.Todo);
+    });
 }
 
 exports.post_todo_delete = function (req, res, next) {
