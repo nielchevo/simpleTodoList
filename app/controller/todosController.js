@@ -9,6 +9,7 @@ var userModel = require('../model/userModel');
 exports.get_todos_lists = function(req, res, next) {
     async.parallel({
         // Async Tasks
+        // pbk todo: fix this to get from the actual user's id
         Todos: function(callback) {
             todosModel.find()
                 .exec(callback);
@@ -115,5 +116,10 @@ exports.get_todo_modify = function(req, res, next) {
 exports.get_todos_detail = function(req, res, next) {
     let todoId = req.params.id;
     res.send('this GET API card detail for ID: '+ todoId);
+}
+
+exports.test_get_auth = function(req, res, next) {
+    console.log(req.userId);
+    res.sendStatus(200);
 }
 

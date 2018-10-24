@@ -7,7 +7,6 @@ var User = require('../model/userModel');
 
 exports.createUser = [
     
-    // validation still not working properly here
     body('username', 'Username should not be empty !').isLength({min: 1}).trim(),
     body('password', 'Password should not be empty !').isLength({min: 1}).trim(),
     body('password', 'Password minimum must be 6 characters !').isLength({min: 6}).trim(),
@@ -72,6 +71,8 @@ exports.userLogin = function (req, res, next) {
     // validation
     // ... 
     // end of validation
+
+    // pbk todo : fix the login, find the actual user in db
     let newUser = new User({
         username: req.body.username,
         password: req.body.password
