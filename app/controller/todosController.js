@@ -39,17 +39,13 @@ exports.get_todo_create = function(req, res, next) {
 exports.post_todo_create = [
 
     body('title').trim(),
-    body('userId', 'User must not be empty.').isLength({ min:1 }).trim(),
     body('list').trim(),
     body('date_of_created').optional({checkFalsy: true}).isISO8601(),
-    body('visible').isBoolean(),
 
     sanitizeBody('*').trim().escape(),
     sanitizeBody('title').trim().escape(),
-    sanitizeBody('userId').trim().escape(),
     sanitizeBody('list').trim().escape(),
     sanitizeBody('date_of_created').toDate(),
-    sanitizeBody('visible').toBoolean(),
 
     (req, res, next) => {
         const errors = validationResult(req);
@@ -58,7 +54,7 @@ exports.post_todo_create = [
             title           : req.body.title,
             date_of_created : req.body.date_of_created,
             list            : req.body.list,
-            userId          : req.body.userId,
+            userId          : req.userId,
         });
 
         if(!errors.isEmpty()) {
@@ -67,6 +63,7 @@ exports.post_todo_create = [
             return res.status(422).send(errors.array());
         }
         else{
+            //console.log(createTodo);
             createTodo.save(function(err, success) {
                 if(err){
                     console.error('DB Save error !!', err);
