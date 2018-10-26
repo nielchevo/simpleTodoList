@@ -12,6 +12,9 @@ router.get('/', function(req, res, next) {
 // GET list todos
 router.get('/todos', VerifyToken, todosController.get_todos_lists);
 
+// POST to get list of todo by username
+router.post('/todo/:username', VerifyToken, todosController.post_todo_by_username);
+
 // POST create a todo
 router.get('/todo/create', todosController.get_todo_create); // route buat opo
 router.post('/todo/create', VerifyToken, todosController.post_todo_create);

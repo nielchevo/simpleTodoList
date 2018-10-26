@@ -11,7 +11,7 @@ router.post('/user/login', userController.userLogin);
 
 router.post('/user/test1', VerifyToken, function(req, res, next) {
     console.log('test protected route!');
-    console.log('req.userId:', req.userId);
+    console.log('req.decodedUserId:', req.decodedUserId);
     res.sendStatus(200);
 });
 

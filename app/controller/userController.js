@@ -91,6 +91,6 @@ exports.userLogin = function (req, res, next) {
 
 // okay
 exports.testProtected = function (req, res, next) {
-    console.log('usercontroller testProtected: ', req.userId);
+    console.log('usercontroller testProtected: ', req.decodedUserId);
     res.sendStatus(200);
 }
