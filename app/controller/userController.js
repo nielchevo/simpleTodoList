@@ -94,3 +94,36 @@ exports.testProtected = function (req, res, next) {
     console.log('usercontroller testProtected: ', req.decodedUserId);
     res.sendStatus(200);
 }
+
+// WIP
+// reference: 
+// https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
+exports.post_todo_by_username = function (req, res, next) {
+    userModel.findOne({ 'username': req.params.username })
+        .then(function (user) {
+            if (user) {
+                console.log(user._id);
+                if (req.params.username === req.decodedUsername) {
+                    todosModel.find({ 'userId': user._id })
+                        .then(function (todos) {
+                            //console.log(todos);
+                            if (todos) {
+                                console.log('aa');
+                                return res.status(200).send(todos);
+                            }
+                        }).catch(function (err) {
+                            console.log(err);
+                            if (err) { return next(err); }
+                        });
+                } else {
+                    console.log('WIP: WHEN USER SEE OTHER PROFILE');
+                }
+            } else {
+                return res.status(404).send({message:"username not found"});
+            }
+        }).catch(function (err) {
+            if (err) { return next(err); }
+        });
+
+    return res.sendStatus(404);
+}

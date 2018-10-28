@@ -25,39 +25,6 @@ exports.get_todos_lists = function (req, res, next) {
     });
 }
 
-// WIP
-// reference: 
-// https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
-exports.post_todo_by_username = function (req, res, next) {
-    userModel.findOne({ 'username': req.params.username })
-        .then(function (user) {
-            if (user) {
-                console.log(user._id);
-                if (req.params.username === req.decodedUsername) {
-                    todosModel.find({ 'userId': user._id })
-                        .then(function (todos) {
-                            //console.log(todos);
-                            if (todos) {
-                                console.log('aa');
-                                return res.status(200).send(todos);
-                            }
-                        }).catch(function (err) {
-                            console.log(err);
-                            if (err) { return next(err); }
-                        });
-                } else {
-                    console.log('WIP: WHEN USER SEE OTHER PROFILE');
-                }
-            } else {
-                return res.status(404).send({message:"username not found"});
-            }
-        }).catch(function (err) {
-            if (err) { return next(err); }
-        });
-
-    return res.sendStatus(404);
-}
-
 // --------------  API Create ToDo --------------  
 exports.get_todo_create = function (req, res, next) {
     let loginDetail = req.params.loginDetail; // dummy var, waiting for login behavior 
@@ -98,15 +65,17 @@ exports.post_todo_create = [
             return res.status(422).send(errors.array());
         }
         else {
-            //console.log(createTodo);
-            createTodo.save(function (err, success) {
-                if (err) {
-                    console.error('DB Save error !!', err);
-                    return res.status(400).send(err);
-                }
+            console.log(createTodo);
+            // createTodo.save(function (err, success) {
+            //     if (err) {
+            //         console.error('DB Save error !!', err);
+            //         return res.status(400).send(err);
+            //     }
 
-                res.status(201).send(success);
-            });
+            //     res.status(201).send(success);
+            // });
+            console.log('debug todo create'); //debug only
+            return res.sendStatus(200);
         }
     }
 ];

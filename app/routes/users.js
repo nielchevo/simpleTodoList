@@ -17,4 +17,7 @@ router.post('/user/test1', VerifyToken, function(req, res, next) {
 
 router.post('/user/test2', VerifyToken, userController.testProtected);
 
+// POST to get list of todo by username
+router.post('/user/:username/todo', VerifyToken, userController.post_todo_by_username);
+
 module.exports = router;
