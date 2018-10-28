@@ -65,17 +65,19 @@ exports.post_todo_create = [
             return res.status(422).send(errors.array());
         }
         else {
-            console.log(createTodo);
-            // createTodo.save(function (err, success) {
-            //     if (err) {
-            //         console.error('DB Save error !!', err);
-            //         return res.status(400).send(err);
-            //     }
+            
+            createTodo.save(function (err, success) {
+                if (err) {
+                    console.error('DB Save error !!', err);
+                    return res.status(400).send(err);
+                }
 
-            //     res.status(201).send(success);
-            // });
-            console.log('debug todo create'); //debug only
-            return res.sendStatus(200);
+                res.status(201).send(success);
+            });
+
+            // console.log(createTodo);
+            // console.log('debug todo create'); //debug only
+            // return res.sendStatus(200);
         }
     }
 ];
