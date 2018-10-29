@@ -56,38 +56,57 @@ exports.createUser = [
     }
 ];
 
-exports.get_createUser = function(req, res, next) { // buat opo
-    console.log('test oyy');
-
-    User.find().exec(function(err, dbSuccess) {
-    if(err) { return next(res.status(422).send(err)); }
-
-    res.status(201).send(dbSuccess);
-   });
-}
-
 // POST handler for user login
-exports.userLogin = function (req, res, next) {
-    // validation
-    // ... 
-    // end of validation
+exports.userLogin = [
+    // validation & sanitize 
+    body('username', 'Please fill out the username form !').isLength({min: 1}).trim(),
+    body('password', 'please fill out the password form !').isLength({min: 1}).trim(),
 
-    // pbk todo : fix the login, find the actual user in db
-    let newUser = new User({
-        username: req.body.username,
-        password: req.body.password
-    });
+    sanitizeBody('username').trim().escape(),
+    sanitizeBody('password').trim().escape(),
 
-    var token = jwt.sign({
-        user: {
-            _id: newUser._id,
-            username: newUser.username
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        if(errors.isEmpty()){
+            User.findOne({'username': req.body.username})
+                .then(function(user) {
+                    if(user){
+                        if(req.body.username == user.username)
+                        {
+                            if(user.validPassword(req.body.password))
+                            {
+                                var token = jwt.sign({
+                                        user: {
+                                            _id: user._id,
+                                            username: user.username
+                                        }
+                                    }, configs.secret, {
+                                        expiresIn: "8h"
+                                    });
+                                res.status(200).send({auth: true, token: token});
+                            }
+                            else{
+                                res.status(401).send({message: 'user password is invalid'});
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return res.status(401).send({message:'user does not exists in DB'});
+                    }
+                })
+                .catch(function(err) {
+                    if(err){ return next(err); }
+                })
         }
-    }, configs.secret, {
-        expiresIn: "8h"
-    });
-    res.status(200).send({ auth: true, token: token });
-}
+        else
+        {
+            return next(errors.array());
+        }
+    }
+];
 
 // okay
 exports.testProtected = function (req, res, next) {
