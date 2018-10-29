@@ -122,7 +122,7 @@ exports.post_todo_by_username = function (req, res, next) {
     User.findOne({ 'username': req.params.username })
         .then(function (user) {
             if (user) {
-                console.log(user._id);
+                //console.log(user._id);
                 if (req.params.username === req.decodedUsername) {
                     // this when user requesting his/her own todos
                     Todo.find({ 'userId': user._id })
@@ -135,8 +135,15 @@ exports.post_todo_by_username = function (req, res, next) {
                             if (err) { return next(err); }
                         });
                 } else {
-                    // this when user requesting other's todos
-                    // select * from todos where ispublic = true
+                    // this when user requesting other's todos                  
+                    Todo.find({ 'userId': user.id, 'isPublic': true })
+                        .then(function (todos) {
+                            if (todos) {
+                                return res.status(200).send(todos);
+                            }
+                        }).catch(function (err) {
+                            if (err) { return next(err); }
+                        });
                 }
             } else {
                 return res.status(404).send({message:"username not found"});
