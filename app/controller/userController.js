@@ -73,29 +73,20 @@ exports.userLogin = [
         if(errors.isEmpty()){
             User.findOne({'username': req.body.username})
                 .then(function(user) {
-                    if(user){
-                        if(req.body.username == user.username)
-                        {
-                            if(user.validPassword(req.body.password))
-                            {
-                                var token = jwt.sign({
-                                        user: {
-                                            _id: user._id,
-                                            username: user.username
-                                        }
-                                    }, configs.secret, {
-                                        expiresIn: "8h"
-                                    });
-                                res.status(200).send({auth: true, token: token});
-                            }
-                            else{
-                                res.status(401).send({message: 'user password is invalid'});
-                            }
-                        }
+                    if(user && user.validPassword(req.body.password)){
+                        var token = jwt.sign({
+                                user: {
+                                    _id: user._id,
+                                    username: user.username
+                                }
+                            }, configs.secret, {
+                                expiresIn: "8h"
+                            });
+                        res.status(200).send({auth: true, token: token});
                     }
                     else
                     {
-                        return res.status(401).send({message:'user does not exists in DB'});
+                        res.status(401).send({message: 'invalid Authentification'});
                     }
                 })
                 .catch(function(err) {
