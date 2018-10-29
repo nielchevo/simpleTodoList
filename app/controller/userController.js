@@ -4,6 +4,7 @@ const { sanitizeBody } = require('express-validator/filter');
 const jwt = require('jsonwebtoken');
 const configs = require('../config/configs');
 var User = require('../model/userModel');
+var Todo = require('../model/todosModel');
 
 exports.createUser = [
     
@@ -118,24 +119,24 @@ exports.testProtected = function (req, res, next) {
 // reference: 
 // https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
 exports.post_todo_by_username = function (req, res, next) {
-    userModel.findOne({ 'username': req.params.username })
+    User.findOne({ 'username': req.params.username })
         .then(function (user) {
             if (user) {
                 console.log(user._id);
                 if (req.params.username === req.decodedUsername) {
-                    todosModel.find({ 'userId': user._id })
+                    // this when user requesting his/her own todos
+                    Todo.find({ 'userId': user._id })
                         .then(function (todos) {
-                            //console.log(todos);
                             if (todos) {
-                                console.log('aa');
                                 return res.status(200).send(todos);
                             }
                         }).catch(function (err) {
-                            console.log(err);
+                            //console.log('error when searching todos:', err);
                             if (err) { return next(err); }
                         });
                 } else {
-                    console.log('WIP: WHEN USER SEE OTHER PROFILE');
+                    // this when user requesting other's todos
+                    // select * from todos where ispublic = true
                 }
             } else {
                 return res.status(404).send({message:"username not found"});
@@ -143,6 +144,4 @@ exports.post_todo_by_username = function (req, res, next) {
         }).catch(function (err) {
             if (err) { return next(err); }
         });
-
-    return res.sendStatus(404);
 }
