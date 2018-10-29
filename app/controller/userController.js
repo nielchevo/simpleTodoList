@@ -118,7 +118,7 @@ exports.testProtected = function (req, res, next) {
 // WIP
 // reference: 
 // https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
-exports.post_todo_by_username = function (req, res, next) {
+exports.get_todo_by_username = function (req, res, next) {
     User.findOne({ 'username': req.params.username })
         .then(function (user) {
             if (user) {
@@ -146,7 +146,7 @@ exports.post_todo_by_username = function (req, res, next) {
                         });
                 }
             } else {
-                return res.status(404).send({message:"username not found"});
+                return res.status(404).send({error:"username not found"});
             }
         }).catch(function (err) {
             if (err) { return next(err); }
