@@ -32,6 +32,8 @@ router.get('/todo/test/get', VerifyToken, todosController.test_get_auth);
 router.get('/todo/:id/update', todosController.get_todo_modify); // route buat opo
 router.post('/todo/:id/update', VerifyToken, todosController.post_todo_modify);
 
+router.post('/todo/:id/setpublic', VerifyToken, todosController.post_todo_setpublic);
+
 // GET Single detail of a todo
 router.get('/todo/:id', todosController.get_todos_detail);
 

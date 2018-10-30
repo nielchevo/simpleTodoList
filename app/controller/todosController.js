@@ -115,6 +115,25 @@ exports.get_todo_modify = function (req, res, next) {
     res.send('not yet implemented! (Update Todo)');
 }
 
+exports.post_todo_setpublic = function (req, res, next) {
+    todosModel.findOne({_id:req.params.id, userId:req.decodedUserId})
+        .then(function(todo) {
+            if (todo) {
+                let updTodo = new todosModel({
+                    isPublic: req.body.isPublic
+                });
+                todosModel.findOneAndUpdate(req.params.id, updTodo, {}, function(err, thetodo) {
+                    if (err) { return next(err); }
+                    res.status(200).send(thetodo);
+                });
+            }
+        }).catch(function (err) {
+            if (err) { return next(err); }
+        });
+
+    //res.sendStatus(200);
+}
+
 // --------------  API GET Single Detail ToDo --------------  
 exports.get_todos_detail = function (req, res, next) {
     let todoId = req.params.id;
