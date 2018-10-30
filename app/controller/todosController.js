@@ -42,19 +42,16 @@ exports.post_todo_create = [
 
     body('title').trim(),
     body('list').trim(),
-    body('date_of_created').optional({ checkFalsy: true }).isISO8601(),
 
     sanitizeBody('*').trim().escape(),
     sanitizeBody('title').trim().escape(),
     sanitizeBody('list').trim().escape(),
-    sanitizeBody('date_of_created').toDate(),
 
     (req, res, next) => {
         const errors = validationResult(req);
 
         let createTodo = new todosModel({
             title: req.body.title,
-            date_of_created: req.body.date_of_created,
             list: req.body.list,
             userId: req.decodedUserId,
         });
@@ -137,7 +134,13 @@ exports.post_todo_setpublic = function (req, res, next) {
 // --------------  API GET Single Detail ToDo --------------  
 exports.get_todos_detail = function (req, res, next) {
     let todoId = req.params.id;
-    res.send('this GET API card detail for ID: ' + todoId);
+
+    todosModel.findOne({ _id: todoId, userId: req.decodedUserId}, function(err, results) {
+        // TODO: Need proper error handling
+        if(err) { return next(err); }
+        
+        res.status(200).send(results);
+    });
 }
 
 exports.test_get_auth = function (req, res, next) {
