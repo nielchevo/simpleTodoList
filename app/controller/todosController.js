@@ -62,7 +62,7 @@ exports.post_todo_create = [
             return res.status(422).send(errors.array());
         }
         else {
-            
+
             createTodo.save(function (err, success) {
                 if (err) {
                     console.error('DB Save error !!', err);
@@ -112,17 +112,22 @@ exports.get_todo_modify = function (req, res, next) {
     res.send('not yet implemented! (Update Todo)');
 }
 
+// route for set a todo public or no
+// only require isPublic:true/false in request body
+// ref: https://stackoverflow.com/questions/37267042/mongoose-findoneandupdate-updating-multiple-fields
 exports.post_todo_setpublic = function (req, res, next) {
-    todosModel.findOne({_id:req.params.id, userId:req.decodedUserId})
-        .then(function(todo) {
+    todosModel.findOne({ _id: req.params.id, userId: req.decodedUserId })
+        .then(function (todo) {
             if (todo) {
-                let updTodo = new todosModel({
-                    isPublic: req.body.isPublic
-                });
-                todosModel.findOneAndUpdate(req.params.id, updTodo, {}, function(err, thetodo) {
-                    if (err) { return next(err); }
-                    res.status(200).send(thetodo);
-                });
+                todosModel.findOneAndUpdate({ "_id": req.params.id },
+                    {
+                        "$set": {
+                            "isPublic": req.body.isPublic
+                        }
+                    }, {}, function (err, thetodo) {
+                        if (err) { return next(err); }
+                        res.status(200).send(thetodo);
+                    });
             }
         }).catch(function (err) {
             if (err) { return next(err); }
