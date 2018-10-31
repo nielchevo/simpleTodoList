@@ -27,18 +27,6 @@ exports.get_todos_lists = function (req, res, next) {
 }
 
 // --------------  API Create ToDo --------------  
-exports.get_todo_create = function (req, res, next) {
-    let loginDetail = req.params.loginDetail; // dummy var, waiting for login behavior 
-
-    userModel.find({ 'username': new RegExp(loginDetail, 'i') }, 'username _id', function (err, results) {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        // Success, return username info
-        res.status(200).send(results);
-    });
-}
-
 exports.post_todo_create = [
 
     body('title').trim(),
@@ -79,26 +67,6 @@ exports.post_todo_create = [
         }
     }
 ];
-
-// --------------  API Delete ToDo --------------  
-exports.get_todo_delete = function (req, res, next) {
-    let userSession = req.query.user; // user ObjectId temp variable, get from JWT auth.
-
-    async.parallel({
-        // Async Tasks
-        Todo: function (callback) {
-            todosModel.find({ 'userId': userSession })
-                .exec(callback);
-        }
-    }, function (err, results) {
-        // Async Callback
-        if (err) {
-            return res.status(500).send(err);
-        }
-
-        res.status(200).send(results.Todo);
-    });
-}
 
 exports.post_todo_delete = function (req, res, next) {
     res.send('not yet implemented! (Delete Todo)');
@@ -148,10 +116,6 @@ exports.post_todo_modify = [
         }
     }
 ];
-
-exports.get_todo_modify = function (req, res, next) {
-    res.send('not yet implemented! (Update Todo)');
-}
 
 // route for set a todo public or no
 // only require isPublic:true/false in request body
