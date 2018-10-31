@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const configs = require('../config/configs');
 var User = require('../model/userModel');
 var Todo = require('../model/todosModel');
+var SessionModel = require('../model/sessionModel');
 
 exports.createUser = [
     
@@ -47,7 +48,7 @@ exports.createUser = [
                     user: {
                         _id: newUser._id,
                         username: newUser.username
-                }}, configs.secret, {
+                }}, configs.AccessSecret, {
                     expiresIn: "8h"
                 });
 
@@ -74,15 +75,31 @@ exports.userLogin = [
             User.findOne({'username': req.body.username})
                 .then(function(user) {
                     if(user && user.validPassword(req.body.password)){
+                        // Generate Access token
                         var token = jwt.sign({
                                 user: {
                                     _id: user._id,
                                     username: user.username
                                 }
-                            }, configs.secret, {
-                                expiresIn: "8h"
+                            }, configs.AccessSecret, {
+                                expiresIn: "30m"
                             });
-                        res.status(200).send({auth: true, token: token});
+                        
+                        /* TODO: validate Refresh Token HERE (if expired, then renew) 
+                        https://github.com/auth0/node-jsonwebtoken#refreshing-jwts */
+
+                            // Generate Refresh token 
+                            var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
+                                                        configs.RefreshSecret,
+                                                        { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
+                            );
+                            
+                        // TODO: Save refresh token to session DB
+                        
+                        let decodedRefresh = jwt.decode(refreshToken, {json:true} );
+                        console.log(decodedRefresh);
+
+                        res.status(200).send({auth: true, token: token, refreshToken: refreshToken});
                     }
                     else
                     {
