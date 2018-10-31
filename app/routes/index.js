@@ -16,7 +16,7 @@ router.get('/todos', VerifyToken, todosController.get_todos_lists);
 router.post('/todo/create', VerifyToken, todosController.post_todo_create);
 
 // POST todo delete
-router.delete('/todo/delete', VerifyToken, todosController.post_todo_delete);
+router.delete('/todo/:id/delete', VerifyToken, todosController.post_todo_delete);
 
 // test route auth with GET
 router.get('/todo/test/get', VerifyToken, todosController.test_get_auth);

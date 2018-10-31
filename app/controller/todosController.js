@@ -69,7 +69,24 @@ exports.post_todo_create = [
 ];
 
 exports.post_todo_delete = function (req, res, next) {
-    res.send('not yet implemented! (Delete Todo)');
+    try{
+        todosModel.findOneAndDelete({ _id: req.params.id, userId: req.decodedUserId }, 
+            { /* Options */ },
+            function(err, results) {
+                if(err) { 
+                    return res.sendStatus(404).send(err);
+                }
+    
+                if(results == null){
+                    return res.status(500).send('No such ID exist !');
+                }
+    
+                res.status(200).send("Todo with title ("+ results.title +") and _ID ("+ results._id +") successfully deleted !");
+        });
+    }
+    catch(error) {
+        console.log(error);
+    }
 }
 
 // --------------  API Update ToDo --------------  
