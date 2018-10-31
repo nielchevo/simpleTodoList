@@ -22,7 +22,7 @@ router.delete('/todo/delete', VerifyToken, todosController.post_todo_delete);
 router.get('/todo/test/get', VerifyToken, todosController.test_get_auth);
 
 // POST update todo
-router.put('/todo/:id/update', VerifyToken, todosController.post_todo_modify);
+router.post('/todo/:id/update', VerifyToken, todosController.post_todo_modify);
 
 router.post('/todo/:id/setpublic', VerifyToken, todosController.post_todo_setpublic);
 

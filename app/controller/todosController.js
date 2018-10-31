@@ -1,6 +1,7 @@
 var async = require('async');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const mongoose = require('mongoose');
 
 var todosModel = require('../model/todosModel');
 var userModel = require('../model/userModel');
@@ -104,9 +105,49 @@ exports.post_todo_delete = function (req, res, next) {
 }
 
 // --------------  API Update ToDo --------------  
-exports.post_todo_modify = function (req, res, next) {
-    res.send('not yet implemented! (Update Todo)');
-}
+// reference: https://medium.com/@yugagrawal95/mongoose-mongodb-functions-for-crud-application-1f54d74f1b34
+exports.post_todo_modify = [
+
+    body('title').trim(),
+    body('list').trim(),
+
+    sanitizeBody('*').trim().escape(),
+    sanitizeBody('title').trim().escape(),
+    sanitizeBody('list').trim().escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // Validation Error
+            console.error('Validation Input Error !!', errors.array());
+            return res.status(422).send(errors.array());
+        }
+        else {
+            let id = req.params.id;
+            if (mongoose.Types.ObjectId.isValid(id)) {
+                todosModel.findByIdAndUpdate(id,
+                    {
+                        "$set": {
+                            title: req.body.title,
+                            list: req.body.list,
+                            isPublic: req.body.isPublic
+                        }
+                    }).then(function (todo) {
+                        if (todo) {
+                            return res.status(204).send(todo);
+                        } else {
+                            return res.status(404).send({ error: "todo with that id didn't exists" });
+                        }
+                    }).catch(function (err) {
+                        if (err) { return next(err); }
+                    });
+            } else {
+                return res.status(500).send({ error: "incorrect id" });
+            }
+        }
+    }
+];
 
 exports.get_todo_modify = function (req, res, next) {
     res.send('not yet implemented! (Update Todo)');
