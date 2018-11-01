@@ -1,6 +1,7 @@
 var async = require('async');
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
+const mongoose = require('mongoose');
 
 var todosModel = require('../model/todosModel');
 var userModel = require('../model/userModel');
@@ -26,35 +27,20 @@ exports.get_todos_lists = function (req, res, next) {
 }
 
 // --------------  API Create ToDo --------------  
-exports.get_todo_create = function (req, res, next) {
-    let loginDetail = req.params.loginDetail; // dummy var, waiting for login behavior 
-
-    userModel.find({ 'username': new RegExp(loginDetail, 'i') }, 'username _id', function (err, results) {
-        if (err) {
-            return res.status(500).send(err);
-        }
-        // Success, return username info
-        res.status(200).send(results);
-    });
-}
-
 exports.post_todo_create = [
 
     body('title').trim(),
     body('list').trim(),
-    body('date_of_created').optional({ checkFalsy: true }).isISO8601(),
 
     sanitizeBody('*').trim().escape(),
     sanitizeBody('title').trim().escape(),
     sanitizeBody('list').trim().escape(),
-    sanitizeBody('date_of_created').toDate(),
 
     (req, res, next) => {
         const errors = validationResult(req);
 
         let createTodo = new todosModel({
             title: req.body.title,
-            date_of_created: req.body.date_of_created,
             list: req.body.list,
             userId: req.decodedUserId,
         });
@@ -65,7 +51,7 @@ exports.post_todo_create = [
             return res.status(422).send(errors.array());
         }
         else {
-            
+
             createTodo.save(function (err, success) {
                 if (err) {
                     console.error('DB Save error !!', err);
@@ -82,43 +68,106 @@ exports.post_todo_create = [
     }
 ];
 
-// --------------  API Delete ToDo --------------  
-exports.get_todo_delete = function (req, res, next) {
-    let userSession = req.query.user; // user ObjectId temp variable, get from JWT auth.
-
-    async.parallel({
-        // Async Tasks
-        Todo: function (callback) {
-            todosModel.find({ 'userId': userSession })
-                .exec(callback);
-        }
-    }, function (err, results) {
-        // Async Callback
-        if (err) {
-            return res.status(500).send(err);
-        }
-
-        res.status(200).send(results.Todo);
-    });
-}
-
 exports.post_todo_delete = function (req, res, next) {
-    res.send('not yet implemented! (Delete Todo)');
+    try{
+        todosModel.findOneAndDelete({ _id: req.params.id, userId: req.decodedUserId }, 
+            { /* Options */ },
+            function(err, results) {
+                if(err) { 
+                    return res.sendStatus(404).send(err);
+                }
+    
+                if(results == null){
+                    return res.status(500).send('No such ID exist !');
+                }
+    
+                res.status(200).send("Todo with title ("+ results.title +") and _ID ("+ results._id +") successfully deleted !");
+        });
+    }
+    catch(error) {
+        console.log(error);
+    }
 }
 
 // --------------  API Update ToDo --------------  
-exports.post_todo_modify = function (req, res, next) {
-    res.send('not yet implemented! (Update Todo)');
-}
+// reference: https://medium.com/@yugagrawal95/mongoose-mongodb-functions-for-crud-application-1f54d74f1b34
+exports.post_todo_modify = [
 
-exports.get_todo_modify = function (req, res, next) {
-    res.send('not yet implemented! (Update Todo)');
+    body('title').trim(),
+    body('list').trim(),
+
+    sanitizeBody('*').trim().escape(),
+    sanitizeBody('title').trim().escape(),
+    sanitizeBody('list').trim().escape(),
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // Validation Error
+            console.error('Validation Input Error !!', errors.array());
+            return res.status(422).send(errors.array());
+        }
+        else {
+            let id = req.params.id;
+            if (mongoose.Types.ObjectId.isValid(id)) {
+                todosModel.findByIdAndUpdate(id,
+                    {
+                        "$set": {
+                            title: req.body.title,
+                            list: req.body.list,
+                            isPublic: req.body.isPublic
+                        }
+                    }).then(function (todo) {
+                        if (todo) {
+                            return res.status(204).send(todo);
+                        } else {
+                            return res.status(404).send({ error: "todo with that id didn't exists" });
+                        }
+                    }).catch(function (err) {
+                        if (err) { return next(err); }
+                    });
+            } else {
+                return res.status(500).send({ error: "incorrect id" });
+            }
+        }
+    }
+];
+
+// route for set a todo public or no
+// only require isPublic:true/false in request body
+// ref: https://stackoverflow.com/questions/37267042/mongoose-findoneandupdate-updating-multiple-fields
+exports.post_todo_setpublic = function (req, res, next) {
+    todosModel.findOne({ _id: req.params.id, userId: req.decodedUserId })
+        .then(function (todo) {
+            if (todo) {
+                todosModel.findOneAndUpdate({ "_id": req.params.id },
+                    {
+                        "$set": {
+                            "isPublic": req.body.isPublic
+                        }
+                    }, {}, function (err, thetodo) {
+                        if (err) { return next(err); }
+                        res.status(200).send(thetodo);
+                    });
+            }
+        }).catch(function (err) {
+            if (err) { return next(err); }
+        });
+
+    //res.sendStatus(200);
 }
 
 // --------------  API GET Single Detail ToDo --------------  
 exports.get_todos_detail = function (req, res, next) {
     let todoId = req.params.id;
-    res.send('this GET API card detail for ID: ' + todoId);
+
+    todosModel.findOne({ _id: todoId, userId: req.decodedUserId}, function(err, results) {
+        // TODO: Need proper error handling
+        if(err) { return next(err); }
+        
+        res.status(200).send(results);
+    });
 }
 
 exports.test_get_auth = function (req, res, next) {

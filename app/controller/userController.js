@@ -4,6 +4,8 @@ const { sanitizeBody } = require('express-validator/filter');
 const jwt = require('jsonwebtoken');
 const configs = require('../config/configs');
 var User = require('../model/userModel');
+var Todo = require('../model/todosModel');
+var SessionModel = require('../model/sessionModel');
 
 exports.createUser = [
     
@@ -46,7 +48,7 @@ exports.createUser = [
                     user: {
                         _id: newUser._id,
                         username: newUser.username
-                }}, configs.secret, {
+                }}, configs.AccessSecret, {
                     expiresIn: "8h"
                 });
 
@@ -56,38 +58,64 @@ exports.createUser = [
     }
 ];
 
-exports.get_createUser = function(req, res, next) { // buat opo
-    console.log('test oyy');
-
-    User.find().exec(function(err, dbSuccess) {
-    if(err) { return next(res.status(422).send(err)); }
-
-    res.status(201).send(dbSuccess);
-   });
-}
-
 // POST handler for user login
-exports.userLogin = function (req, res, next) {
-    // validation
-    // ... 
-    // end of validation
+exports.userLogin = [
+    // validation & sanitize 
+    body('username', 'Please fill out the username form !').isLength({min: 1}).trim(),
+    body('password', 'please fill out the password form !').isLength({min: 1}).trim(),
 
-    // pbk todo : fix the login, find the actual user in db
-    let newUser = new User({
-        username: req.body.username,
-        password: req.body.password
-    });
+    sanitizeBody('username').trim().escape(),
+    sanitizeBody('password').trim().escape(),
 
-    var token = jwt.sign({
-        user: {
-            _id: newUser._id,
-            username: newUser.username
+    (req, res, next) => {
+
+        const errors = validationResult(req);
+
+        if(errors.isEmpty()){
+            User.findOne({'username': req.body.username})
+                .then(function(user) {
+                    if(user && user.validPassword(req.body.password)){
+                        // Generate Access token
+                        var token = jwt.sign({
+                                user: {
+                                    _id: user._id,
+                                    username: user.username
+                                }
+                            }, configs.AccessSecret, {
+                                expiresIn: "30m"
+                            });
+                        
+                        /* TODO: validate Refresh Token HERE (if expired, then renew) 
+                        https://github.com/auth0/node-jsonwebtoken#refreshing-jwts */
+
+                            // Generate Refresh token 
+                            var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
+                                                        configs.RefreshSecret,
+                                                        { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
+                            );
+                            
+                        // TODO: Save refresh token to session DB
+                        
+                        let decodedRefresh = jwt.decode(refreshToken, {json:true} );
+                        console.log(decodedRefresh);
+
+                        res.status(200).send({auth: true, token: token, refreshToken: refreshToken});
+                    }
+                    else
+                    {
+                        res.status(401).send({message: 'invalid Authentification'});
+                    }
+                })
+                .catch(function(err) {
+                    if(err){ return next(err); }
+                })
         }
-    }, configs.secret, {
-        expiresIn: "8h"
-    });
-    res.status(200).send({ auth: true, token: token });
-}
+        else
+        {
+            return next(errors.array());
+        }
+    }
+];
 
 // okay
 exports.testProtected = function (req, res, next) {
@@ -98,32 +126,37 @@ exports.testProtected = function (req, res, next) {
 // WIP
 // reference: 
 // https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
-exports.post_todo_by_username = function (req, res, next) {
-    userModel.findOne({ 'username': req.params.username })
+exports.get_todo_by_username = function (req, res, next) {
+    User.findOne({ 'username': req.params.username })
         .then(function (user) {
             if (user) {
-                console.log(user._id);
+                //console.log(user._id);
                 if (req.params.username === req.decodedUsername) {
-                    todosModel.find({ 'userId': user._id })
+                    // this when user requesting his/her own todos
+                    Todo.find({ 'userId': user._id })
                         .then(function (todos) {
-                            //console.log(todos);
                             if (todos) {
-                                console.log('aa');
                                 return res.status(200).send(todos);
                             }
                         }).catch(function (err) {
-                            console.log(err);
+                            //console.log('error when searching todos:', err);
                             if (err) { return next(err); }
                         });
                 } else {
-                    console.log('WIP: WHEN USER SEE OTHER PROFILE');
+                    // this when user requesting other's todos                  
+                    Todo.find({ 'userId': user.id, 'isPublic': true })
+                        .then(function (todos) {
+                            if (todos) {
+                                return res.status(200).send(todos);
+                            }
+                        }).catch(function (err) {
+                            if (err) { return next(err); }
+                        });
                 }
             } else {
-                return res.status(404).send({message:"username not found"});
+                return res.status(404).send({error:"username not found"});
             }
         }).catch(function (err) {
             if (err) { return next(err); }
         });
-
-    return res.sendStatus(404);
 }
