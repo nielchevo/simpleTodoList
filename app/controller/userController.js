@@ -36,24 +36,36 @@ exports.createUser = [
             return res.status(422).send(errors.array());
             
         } else {
-            newUser.password = newUser.getHashSync(req.body.password);
-        
-            newUser.save(function (err) {
-                if (err) {
-                    //return res.status(500).send("Error registering user");
-                    return next(err)
-                };
+            User.findOne({ 'username': req.body.username })
+                .then(function (user) {
+                    if (user) {
+                        return res.status(403).send({error:"username exist, use another"});
+                    } else {
+                        newUser.password = newUser.getHashSync(req.body.password);
 
-                var token = jwt.sign({ 
-                    user: {
-                        _id: newUser._id,
-                        username: newUser.username
-                }}, configs.AccessSecret, {
-                    expiresIn: "8h"
+                        newUser.save(function (err) {
+                            if (err) {
+                                return next(err);
+                            };
+
+                            var token = jwt.sign({
+                                user: {
+                                    _id: newUser._id,
+                                    username: newUser.username
+                                }
+                            }, configs.AccessSecret, {
+                                    expiresIn: "8h"
+                                });
+
+                            res.status(201).send({ auth: true, token: token });
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    if (error) {
+                        return next(err);
+                    }
                 });
-
-                res.status(201).send({ auth: true, token: token });
-            });
        }
     }
 ];
@@ -89,10 +101,10 @@ exports.userLogin = [
                         https://github.com/auth0/node-jsonwebtoken#refreshing-jwts */
 
                             // Generate Refresh token 
-                            var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
-                                                        configs.RefreshSecret,
-                                                        { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
-                            );
+                        var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
+                                                    configs.RefreshSecret,
+                                                    { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
+                        );
                             
                         // TODO: Save refresh token to session DB
                         
