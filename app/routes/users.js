@@ -19,4 +19,7 @@ router.post('/user/test2', VerifyToken, userController.testProtected);
 // GET to get list of todo by username
 router.get('/user/:username/todo', VerifyToken, userController.get_todo_by_username);
 
+// POST update user
+router.post('/user/:userId/update', VerifyToken, userController.post_update_user);
+
 module.exports = router;
