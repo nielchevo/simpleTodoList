@@ -1,7 +1,8 @@
 const { body, validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
-
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+
 const configs = require('../config/configs');
 var User = require('../model/userModel');
 var Todo = require('../model/todosModel');
@@ -36,24 +37,36 @@ exports.createUser = [
             return res.status(422).send(errors.array());
             
         } else {
-            newUser.password = newUser.getHashSync(req.body.password);
-        
-            newUser.save(function (err) {
-                if (err) {
-                    //return res.status(500).send("Error registering user");
-                    return next(err)
-                };
+            User.findOne({ 'username': req.body.username })
+                .then(function (user) {
+                    if (user) {
+                        return res.status(403).send({error:"username exist, use another"});
+                    } else {
+                        newUser.password = newUser.getHashSync(req.body.password);
 
-                var token = jwt.sign({ 
-                    user: {
-                        _id: newUser._id,
-                        username: newUser.username
-                }}, configs.AccessSecret, {
-                    expiresIn: "8h"
+                        newUser.save(function (err) {
+                            if (err) {
+                                return next(err);
+                            };
+
+                            var token = jwt.sign({
+                                user: {
+                                    _id: newUser._id,
+                                    username: newUser.username
+                                }
+                            }, configs.AccessSecret, {
+                                    expiresIn: "8h"
+                                });
+
+                            res.status(201).send({ auth: true, token: token });
+                        });
+                    }
+                })
+                .catch(function (error) {
+                    if (error) {
+                        return next(err);
+                    }
                 });
-
-                res.status(201).send({ auth: true, token: token });
-            });
        }
     }
 ];
@@ -89,10 +102,10 @@ exports.userLogin = [
                         https://github.com/auth0/node-jsonwebtoken#refreshing-jwts */
 
                             // Generate Refresh token 
-                            var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
-                                                        configs.RefreshSecret,
-                                                        { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
-                            );
+                        var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
+                                                    configs.RefreshSecret,
+                                                    { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
+                        );
                             
                         // TODO: Save refresh token to session DB
                         
@@ -123,7 +136,7 @@ exports.testProtected = function (req, res, next) {
     res.sendStatus(200);
 }
 
-// WIP
+// GET route for getting todo list of a user
 // reference: 
 // https://medium.freecodecamp.org/introduction-to-mongoose-for-mongodb-d2a7aa593c57
 exports.get_todo_by_username = function (req, res, next) {
@@ -160,3 +173,58 @@ exports.get_todo_by_username = function (req, res, next) {
             if (err) { return next(err); }
         });
 }
+
+
+// POST route for updating user
+// currently limited only to password 
+exports.post_update_user = [
+
+    body('password', 'Password should not be empty !').isLength({ min: 1 }).trim(),
+    body('password', 'Password minimum must be 6 characters !').isLength({ min: 6 }).trim(),
+    body('passwordConf', 'Password Confirmation is required !').isLength({ min: 1 }).trim(),
+
+    body('passwordConf').custom((value, { req }) => {
+        if (value !== req.body.password) {
+            throw new Error('Password confirmation DO NOT match !');
+        } else {
+            return value;
+        }
+    }).trim(),
+
+    sanitizeBody('*').trim().escape(), //global sanitize
+
+    (req, res, next) => {
+        const errors = validationResult(req);
+
+        let updUser = new User();
+
+        if (!errors.isEmpty()) {
+            return res.status(422).send(errors.array());
+        } else {
+            if (mongoose.Types.ObjectId.isValid(req.params.userId)) {
+                hashedPassword = updUser.getHashSync(req.body.password);
+                console.log(hashedPassword);
+
+                User.findByIdAndUpdate(req.params.userId,
+                    {
+                        "$set": {
+                            password: hashedPassword
+                        }
+                    }
+                ).then(function (user) {
+                    if (user) {
+                        return res.status(204).send({ success: "user updated" });
+                    } else {
+                        return res.status(404).send({ error: "user not found" });
+                    }
+                }).catch(function (err) {
+                    if (err) {
+                        return next(err);
+                    }
+                });
+            } else {
+                return res.status(500).send({ error: "incorrect user id" });
+            }
+        }
+    }
+];
