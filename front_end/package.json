@@ -4,9 +4,21 @@
   "description": "this handle simpleTodoList front end (react)",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
+    "helmet": "^3.14.0",
+    "jshint": "^2.9.6",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "react-scripts": "2.0.5"
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "^2.0.5",
+    "ts-loader": "^5.3.0",
+    "typescript": "^3.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
