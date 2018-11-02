@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const configs = require('../config/configs');
 var User = require('../model/userModel');
 var Todo = require('../model/todosModel');
-var SessionModel = require('../model/sessionModel');
+const Auth = require('../auth/authController');
 
 exports.createUser = [
     
@@ -100,18 +100,9 @@ exports.userLogin = [
                         
                         /* TODO: validate Refresh Token HERE (if expired, then renew) 
                         https://github.com/auth0/node-jsonwebtoken#refreshing-jwts */
-
-                            // Generate Refresh token 
-                        var refreshToken = jwt.sign({ user:{ _id: user._id, username: user.username } }, 
-                                                    configs.RefreshSecret,
-                                                    { expiresIn: configs.RefreshLifetime, jwtid: 'should_be_unique_JTI' }
-                        );
+                        var refreshToken = Auth.GenerateRefreshToken({userId: user._id, username: user.username});
                             
                         // TODO: Save refresh token to session DB
-                        
-                        let decodedRefresh = jwt.decode(refreshToken, {json:true} );
-                        console.log(decodedRefresh);
-
                         res.status(200).send({auth: true, token: token, refreshToken: refreshToken});
                     }
                     else
