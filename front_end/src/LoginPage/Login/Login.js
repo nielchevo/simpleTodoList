@@ -14,19 +14,21 @@ class Login extends Component {
         super(props);
 
         this.state = {
-            email: ''
+            email: null,
+            password: null
         };
     }
 
     async submit() {
-        await axios.post('http://localhost:5000', {
-            email: this.state.email
-        }, {
+        await axios.post('http://localhost:5000/login', {
+            email: this.state.email,
+            password: this.state.password
+        }/*, {
                 headers: {
                     //'Authorization': `Token ${still_none}`
                     'Authorization': `Token hai`
                 }
-            });
+            }*/);
     }
 
     render() {
@@ -42,6 +44,9 @@ class Login extends Component {
                             <label htmlFor="formGroupExampleInput2">Another label</label>
                             <input type="text" className="form-control" id="formGroupExampleInput2" placeholder="Another input" />
                         </div>
+                        <div className="form-group">
+                            <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                        </div>                        
                     </form>
                 </div>
             </div>
