@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var validator = require('express-validator');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var cors = require('cors');
 
 var app = express();
 
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(validator());
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);

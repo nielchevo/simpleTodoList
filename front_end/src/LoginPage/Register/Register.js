@@ -11,7 +11,7 @@ class Register extends Component {
                                 <h5 className="card-title text-center">Register</h5>
                                 <form className="form-signin">
                                     <div className="form-label-group">
-                                        <input type="email" id="email" className="form-control" placeholder="enter email" required autofocus />
+                                        <input type="email" id="email" className="form-control" placeholder="enter email" required autoFocus />
                                         <label htmlFor="inputEmail">Email</label>
                                     </div>
 

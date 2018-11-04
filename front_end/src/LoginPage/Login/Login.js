@@ -1,34 +1,33 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
 
-const divNone = {
-    display: 'none'
-};
-
-const divProg = {
-    display: 'block'
-}
-
 class Login extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            email: null,
+            username: null,
             password: null
         };
+
+        this.submit = this.submit.bind(this);
     }
 
-    async submit() {
-        await axios.post('http://localhost:5000/login', {
-            email: this.state.email,
+    async submit(e) {
+        e.preventDefault();
+
+        console.log('submiting login');
+        await axios.post('http://localhost:5000/user/login', {
+            username: this.state.username,
             password: this.state.password
-        }/*, {
+        }
+        /*, {
                 headers: {
                     //'Authorization': `Token ${still_none}`
                     'Authorization': `Token hai`
                 }
-            }*/);
+            }*/
+        );
     }
 
     render() {
@@ -37,15 +36,15 @@ class Login extends Component {
                 <div className="row h-100 justify-content-center align-items-center">
                     <form className="col-12">
                         <div className="form-group">
-                            <label htmlFor="formGroupExampleInput">Example label</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput" placeholder="Example input" />
+                            <label htmlFor="inputUsername">username</label>
+                            <input type="text" className="form-control" id="username" placeholder="username" />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="formGroupExampleInput2">Another label</label>
-                            <input type="text" className="form-control" id="formGroupExampleInput2" placeholder="Another input" />
+                            <label htmlFor="inputPassword">password</label>
+                            <input type="password" className="form-control" id="password" placeholder="password" />
                         </div>
                         <div className="form-group">
-                            <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                            <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit" onClick={this.submit}>Sign in</button>
                         </div>                        
                     </form>
                 </div>
