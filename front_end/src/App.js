@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <div>
         <NavBar />
-          <Route exact path='/' component={HomePage} />
+          <Route exact path='/' component={LoginPage} />
           <Route path='/login' component={LoginPage} />
           {/*<Route path='/register' component={LoginPage} />*/}
           

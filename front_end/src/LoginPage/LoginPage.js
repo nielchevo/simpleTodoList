@@ -1,5 +1,5 @@
 ﻿import React, { Component } from 'react';
-import Login from './Login/Login';
+import LoginContainer from './LoginContainer/LoginContainer';
 import Register from './Register/Register';
 import '../App.css';
 
@@ -18,7 +18,7 @@ class LoginPage extends Component {
 
                 <div className="tab-content">
                     <div role="tabpanel" className="tab-pane fade show active" id="login">
-                        <Login />
+                        <LoginContainer />
                     </div>
                     <div role="tabpanel" className="tab-pane fade" id="register">
                         <Register />
