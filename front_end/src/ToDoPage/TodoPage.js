@@ -27,6 +27,7 @@ class TodoPage extends Component {
         }
 
         this.viewTodoCollection = this.viewTodoCollection.bind(this);
+        this.addNewList = this.addNewList.bind(this);
     }
 
     viewTodoCollection() {
@@ -48,16 +49,13 @@ class TodoPage extends Component {
         // logic for add new list
         // input text 
         
-        // button submint
-        return(
-            <Input/>
-        );
+        console.log("render new list Input");
     }
 
     render() {
         return(
             <div className="container">
-                {this.viewTodoCollection}
+                {this.viewTodoCollection} 
                 
                 <hr/>
                 <form className="container" onSubmit={this.handleListPost}>
@@ -69,11 +67,21 @@ class TodoPage extends Component {
                         placeholder={"ex. My Todos "}
                         handleChange={this.handleChange}
                     />
-                    <Button 
-                        type={"secondary"}
+                    <Input type={"text"}
+                        title = "todoList"
+                        name ={"todoList"}
+                        placeholder = {"ex. My first todo list "} 
                     />
-                    
                     <Button 
+                        type={"primary"}
+                        title={'+ New list'}
+                        addNewList = {this.addNewList}
+                    />
+                    <br/> <hr/>
+                    <Button 
+                        type={'primary'}
+                        title={'Submit'}
+                        handlePost = {this.handlePost}
                     />
                 </form>
             </div>
