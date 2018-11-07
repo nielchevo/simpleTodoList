@@ -20,16 +20,26 @@ class LoginContainer extends Component {
         this.debugLogState = this.debugLogState.bind(this);
     }
 
-    async handleSubmit(e) {
-        e.preventDefault();
-
+    handleSubmit(e) {
+        
         //console.log(this.state.username);
         //console.log(this.state.password);
-        await axios.post('http://localhost:5000/user/login', {
+        axios.post('http://localhost:5000/user/login', {
             username: this.state.username,
             password: this.state.password
-        }
-        );
+            })
+            .then(response => {
+                if (response) {
+                    console.log(response);
+                }
+            })
+            .catch(err => {
+                if (err) {
+                    console.log("error: ", err);
+                }
+            });
+
+        e.preventDefault();
     }
 
     handleClearForm() {
