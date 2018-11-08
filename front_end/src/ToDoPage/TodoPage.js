@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import todoItem from '../components/todoItem';
 
 var m_todoLists = [ 
     {
@@ -30,10 +31,20 @@ class TodoPage extends Component {
         this.addNewList = this.addNewList.bind(this);
     }
 
-    viewTodoCollection() {
-        // Handle view all todos.
-        return(
-            <li>Test list item</li>
+    viewTodoCollection(props) {
+        const itemList = props.list;
+        return (
+            <div>
+                {
+                    itemList.map(function (item, id) {
+                        return (
+                            <li key={id}>
+                                {item.content}
+                            </li>
+                        );
+                    })
+                }
+            </div>
         );
     }
 
@@ -55,7 +66,8 @@ class TodoPage extends Component {
     render() {
         return(
             <div className="container">
-                {this.viewTodoCollection} 
+                
+                <this.viewTodoCollection list={m_todoLists} />
                 
                 <hr/>
                 <form className="container" onSubmit={this.handleListPost}>
