@@ -4,21 +4,6 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import todoItem from '../components/todoItem';
 
-var m_todoLists = [ 
-    {
-        "isDone" : false,
-        "content" : "testing todo content 1"
-    }, 
-    {
-        "isDone" : false,
-        "content" : "testing todo content 2"
-    }, 
-    {
-        "isDone" : false,
-        "content" : "testing todo content 3"
-    }
-]; // dummy list 
-
 class TodoPage extends Component {
     constructor(props) {
         super();
@@ -66,9 +51,7 @@ class TodoPage extends Component {
     render() {
         return(
             <div className="container">
-                
-                <this.viewTodoCollection list={m_todoLists} />
-                
+                                
                 <hr/>
                 <form className="container" onSubmit={this.handleListPost}>
                     <Input 

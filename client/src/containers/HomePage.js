@@ -1,11 +1,12 @@
 ﻿import React, { Component } from 'react';
 import logo from '../images/logo.svg';
 import './App.css';
+import TodoPage from './TodoPage';
 
 class HomePage extends Component {
     render() {
         return (
-            <div className="Home">
+            <div className="wrapper">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <p>
@@ -22,6 +23,46 @@ class HomePage extends Component {
                         </a>
                     </p>
                 </header>
+                <nav className="nav">
+                    <div class="Logo">LOGO</div>
+                    <ul>
+                        <li>Home</li>
+                        <li>About</li>
+                        <li>Login</li>
+                        <li>Register</li>
+                    </ul>
+                </nav>
+                <div className="container">
+                    <content className="todoPage">
+                        <div className="todoTask-01" >
+                            <p>Todo Task 01 Title Here </p>
+                            <ul>
+                                <li>Todo Item 1</li>
+                                <li>todo Item 2</li>
+                                <li>todo Item 3</li>
+                            </ul>
+                            <form>
+                                <input placeholder="input new todo item"></input>
+                                <button>Add new todo</button>
+                            </form>
+                        </div>
+                        <div className="todoTask-02" >
+                            <p>Todo Task 02 Title Here </p>
+                            <ul>
+                                <li>Todo Item 1</li>
+                                <li>Todo Item 2</li>
+                                <li>Todo Item 3</li>
+                            </ul>
+                            <form>
+                                <input placeholder="input new todo item"></input>
+                                <button>Add new todo</button>
+                            </form>
+                        </div>
+                    </content>
+                    <hr/>
+
+                    <TodoPage/>
+                </div>
             </div>
         );
     }
