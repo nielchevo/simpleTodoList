@@ -2,6 +2,7 @@
 import logo from '../images/logo.svg';
 import './App.css';
 import TodoPage from './TodoPage';
+import NavBar from '../components/NavBar';
 
 class HomePage extends Component {
     render() {
@@ -23,15 +24,9 @@ class HomePage extends Component {
                         </a>
                     </p>
                 </header>
-                <nav className="nav">
-                    <div class="Logo">LOGO</div>
-                    <ul>
-                        <li>Home</li>
-                        <li>About</li>
-                        <li>Login</li>
-                        <li>Register</li>
-                    </ul>
-                </nav>
+                
+               <NavBar />
+
                 <div className="container">
                     <content className="todoPage">
                         <div className="todoTask-01" >
