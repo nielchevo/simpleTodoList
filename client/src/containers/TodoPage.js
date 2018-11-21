@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import todoItem from '../components/todoItem';
+import ListItems from '../components/ListItem';
+import dummyData from '../dummyData';
 
 class TodoPage extends Component {
     constructor(props) {
         super();
+        
         this.state ={
             title: '',
             lists: []
@@ -16,21 +17,10 @@ class TodoPage extends Component {
         this.addNewList = this.addNewList.bind(this);
     }
 
-    viewTodoCollection(props) {
-        const itemList = props.list;
+    viewTodoCollection(todoTitle, todoListItem) {
         return (
-            <div>
-                {
-                    itemList.map(function (item, id) {
-                        return (
-                            <li key={id}>
-                                {item.content}
-                            </li>
-                        );
-                    })
-                }
-            </div>
-        );
+            <ListItems itemList={dummyData}/>
+        )
     }
 
     handlePost() {
@@ -40,47 +30,24 @@ class TodoPage extends Component {
     handleDelete(){
         // Handle Delete Todo.
     }
-
+    
     addNewList() {
-        // logic for add new list
+        // logic for add new list``````
         // input text 
-        
-        console.log("render new list Input");
     }
 
+    todoFormItem = () => {
+        // render FormAddItem
+    };
+
     render() {
-        return(
-            <div className="container">
-                                
-                <hr/>
-                <form className="container" onSubmit={this.handleListPost}>
-                    <Input 
-                        type={"text"}
-                        title={"Todo Title"}
-                        name={"todoTitle"}
-                        value={this.state.title}
-                        placeholder={"ex. My Todos "}
-                        handleChange={this.handleChange}
-                    />
-                    <Input type={"text"}
-                        title = "todoList"
-                        name ={"todoList"}
-                        placeholder = {"ex. My first todo list "} 
-                    />
-                    <Button 
-                        type={"primary"}
-                        title={'+ New list'}
-                        addNewList = {this.addNewList}
-                    />
-                    <br/> <hr/>
-                    <Button 
-                        type={'primary'}
-                        title={'Submit'}
-                        handlePost = {this.handlePost}
-                    />
-                </form>
+        return (
+            <div>
+                <h1>todo Page</h1>
+           
+                <this.viewTodoCollection />
             </div>
-        );
+        )
     }
 }
 export default TodoPage;

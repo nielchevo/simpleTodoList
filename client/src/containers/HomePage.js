@@ -28,35 +28,7 @@ class HomePage extends Component {
                <NavBar />
 
                 <div className="container">
-                    <content className="todoPage">
-                        <div className="todoTask-01" >
-                            <p>Todo Task 01 Title Here </p>
-                            <ul>
-                                <li>Todo Item 1</li>
-                                <li>todo Item 2</li>
-                                <li>todo Item 3</li>
-                            </ul>
-                            <form>
-                                <input placeholder="input new todo item"></input>
-                                <button>Add new todo</button>
-                            </form>
-                        </div>
-                        <div className="todoTask-02" >
-                            <p>Todo Task 02 Title Here </p>
-                            <ul>
-                                <li>Todo Item 1</li>
-                                <li>Todo Item 2</li>
-                                <li>Todo Item 3</li>
-                            </ul>
-                            <form>
-                                <input placeholder="input new todo item"></input>
-                                <button>Add new todo</button>
-                            </form>
-                        </div>
-                    </content>
-                    <hr/>
-
-                    <TodoPage/>
+                    <TodoPage />
                 </div>
             </div>
         );
