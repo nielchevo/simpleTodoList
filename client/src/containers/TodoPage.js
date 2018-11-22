@@ -43,9 +43,9 @@ class TodoPage extends Component {
     render() {
         return (
             <div>
-                <h1>todo Page</h1>
+                <h1>Todo!</h1>
            
-                <this.viewTodoCollection />
+                {this.viewTodoCollection()}
             </div>
         )
     }

@@ -7,7 +7,14 @@ import NavBar from '../components/NavBar';
 class HomePage extends Component {
     render() {
         return (
-            <div className="wrapper">
+            <div className="wrapper">              
+               <NavBar />
+
+                <div className="container">
+                    <TodoPage />
+                </div>
+
+                {/*
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <p>
@@ -24,12 +31,7 @@ class HomePage extends Component {
                         </a>
                     </p>
                 </header>
-                
-               <NavBar />
-
-                <div className="container">
-                    <TodoPage />
-                </div>
+                */}
             </div>
         );
     }
