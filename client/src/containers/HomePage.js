@@ -2,6 +2,7 @@
 import logo from '../images/logo.svg';
 import './App.css';
 import TodoPage from './TodoPage';
+import AddTodo from './AddTodo';
 import NavBar from '../components/NavBar';
 
 class HomePage extends Component {
@@ -12,6 +13,10 @@ class HomePage extends Component {
 
                 <div className="container">
                     <TodoPage />
+                    <br />
+                    <hr align="center" width="90%" />
+                    <br />
+                    <AddTodo />
                 </div>
 
                 {/*
