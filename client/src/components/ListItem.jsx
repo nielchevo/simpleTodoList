@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ListItem = ({itemList}) => {
+const ListItem = ({itemList, deleteTodo}) => {
 	//console.log(itemList);
 
     const items = itemList.length ? (
@@ -11,7 +11,7 @@ const ListItem = ({itemList}) => {
             })
 
             return (
-                <div className="post card" key={item._id}>
+                <div className="post card" key={item._id} onClick={() => deleteTodo(item._id)} >
                     <div className="card-content">
                         <p className="card-title">{item.title}</p>
                         <ul className="List-Item" key={index}>

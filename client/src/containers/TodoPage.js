@@ -8,10 +8,12 @@ class TodoPage extends Component {
     constructor(props) {
         super();
         
-        this.state ={
-            title: '',
-            lists: []
-        }
+        //this.state = {
+        //    title: '',
+        //    lists: []
+        //}
+
+        this.state = dummyData;
 
         this.viewTodoCollection = this.viewTodoCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
@@ -19,7 +21,7 @@ class TodoPage extends Component {
 
     viewTodoCollection(todoTitle, todoListItem) {
         return (
-            <ListItems itemList={dummyData}/>
+            <ListItems itemList={this.state.todos} deleteTodo={this.handleDelete} />
         )
     }
 
@@ -27,8 +29,13 @@ class TodoPage extends Component {
         // Handle submit Todo.
     }
 
-    handleDelete(){
-        // Handle Delete Todo.
+    handleDelete = (id) => {
+        const deletedTodos = this.state.todos.filter(todo => {
+            return todo._id !== id
+        })
+        this.setState({
+            todos: deletedTodos
+        })
     }
     
     addNewList() {
