@@ -23,15 +23,15 @@ class AddTodo extends Component {
     }
 
     handleChangeList = (e) => {
-        let updatelist = this.state.list;
+        const { list } = this.state;
         //console.log(e.target);
         //console.log(updatelist[e.target.id]);
         //console.log(this.state);        
-        updatelist[e.target.id] = {content: e.target.value}
-        //console.log(updatelist);
+        list[e.target.id] = {content: e.target.value}
+        //console.log(list);
         this.setState({
             ...this.state,
-            updatelist
+            list
         })
     }
 
