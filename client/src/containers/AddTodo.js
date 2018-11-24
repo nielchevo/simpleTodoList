@@ -9,9 +9,30 @@ class AddTodo extends Component {
         this.state = {
             title: '',
             list: [
-
+                {
+                    content: 'aaaaaa'
+                },
+                {
+                    content: 'bbbbbb'
+                },
+                {
+                    content: 'cccccc'
+                }
             ]
         };
+    }
+
+    handleChangeList = (e) => {
+        let updatelist = this.state.list;
+        //console.log(e.target);
+        //console.log(updatelist[e.target.id]);
+        //console.log(this.state);        
+        updatelist[e.target.id] = {content: e.target.value}
+        //console.log(updatelist);
+        this.setState({
+            ...this.state,
+            updatelist
+        })
     }
 
     render() {
@@ -20,12 +41,13 @@ class AddTodo extends Component {
             formlist.list.map((item, id) => {
                 return (
                     <input
+                        key={id}
                         className="form-control"
-                        id="list-todo"
+                        id={id}
                         name="list-todo"
                         type="text"
                         value={item.content}
-
+                        onChange={this.handleChangeList}
                         placeholder="what to do"
                     />
                 )
