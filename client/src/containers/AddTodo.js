@@ -10,61 +10,71 @@ class AddTodo extends Component {
             title: '',
             list: [
                 {
-                    content: 'aaaaaa'
-                },
-                {
-                    content: 'bbbbbb'
-                },
-                {
-                    content: 'cccccc'
+                    content: ''
                 }
             ]
         };
     }
 
     handleChangeList = (e) => {
-        const { list } = this.state;
+        const { title, list } = this.state;
         //console.log(e.target);
         //console.log(updatelist[e.target.id]);
         //console.log(this.state);        
         list[e.target.id] = {content: e.target.value}
         //console.log(list);
         this.setState({
-            ...this.state,
+            title,
             list
+        });
+    }
+
+    handleAddList = (e) => {
+        e.preventDefault();
+        const { title, list } = this.state;
+        list.push({ content: '' });
+        this.setState({
+            title,
+            list
+        });
+    }
+
+    handleSubmitForm = (e) => {
+        e.preventDefault();
+        console.log(this.state);
+    }
+
+    renderInputList = () => {
+        const { list } = this.state;
+        let inputlist = [];
+        list.forEach((item, id) => {
+            inputlist.push(
+                <input
+                    key={id}
+                    className="form-control"
+                    id={id}
+                    name="list-todo"
+                    type="text"
+                    value={item.content}
+                    onChange={this.handleChangeList}
+                    placeholder="what to do"
+                />
+            );
         })
+        inputlist.push(<br key="br" />);
+        inputlist.push(
+            <Button
+                key={"btnAdd"} // just to remove warning
+                action={this.handleAddList}
+                type={"primary"}
+                title={"+"}
+            />
+        );
+        return inputlist;
     }
 
     render() {
-        const formlist = this.state;
-        const tes = formlist.list.length ? (
-            formlist.list.map((item, id) => {
-                return (
-                    <input
-                        key={id}
-                        className="form-control"
-                        id={id}
-                        name="list-todo"
-                        type="text"
-                        value={item.content}
-                        onChange={this.handleChangeList}
-                        placeholder="what to do"
-                    />
-                )
-            })
-            
-        ) : (
-            <input
-                className="form-control"
-                id="list-todo"
-                name="list-todo"
-                type="text"
-                value=""
-                
-                placeholder="what to do"
-            />
-        )
-
+        const list = this.renderInputList();
         return (
             <form className="container">
                 <Input
@@ -75,17 +85,13 @@ class AddTodo extends Component {
                     placeholder={"ex. My Todos "}
                     handleChange={() => { }}
                 />
-                {tes}
-                <Button
-                    type={"primary"}
-                    title={'+ New list'}
-                    addNewList={() => { }}
-                />
-                <br /> <hr />
+                {list}
+                <br />
+                <hr />
                 <Button
                     type={'primary'}
                     title={'Submit'}
-                    handlePost={() => { }}
+                    action={this.handleSubmitForm}
                 />
             </form>    
         )
