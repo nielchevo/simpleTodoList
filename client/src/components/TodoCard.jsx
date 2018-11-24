@@ -1,8 +1,6 @@
 import React from 'react';
-
-import FormAddItem from '../components/FormAddItem'
-import BtnDelete from '../components/Button';
-import ListItem from '../components/ListItem';
+import Input from './Input';
+import ListItem from './ListItem'
 /*
    Component to handle one object of todo card. (WIP)
     purpose: break down component as small as posible.
@@ -11,27 +9,37 @@ import ListItem from '../components/ListItem';
                             \-> FormAddItem ( for add new todo item)
    
 */
-const TodoCard = (props) => {
 
-   const kusambat = () => { 
-      return(
-         <div>
-            <ul className="todo-list">
-               <li className="todo-item">Item list 1</li>
-               <li className="todo-item">Item List 2</li>
-            </ul>
+const TodoCard = ({todoLists, todoDeleteCard}) => {
+  
+   const todoObject = todoLists.map( todo => {
+      console.log(todo);
+      let todoListItems = todo.list;
+
+      return (
+         <div className="todo-card" key={todo._id}>
+            <div className="todo-header">
+               <div className="title"> {todo.title} </div>
+               <button className="btn-delete-card"> Delete Card </button>
+            </div>
+            
+            <ListItem 
+               itemList={todo.list} 
+               deleteTodo={todoDeleteCard}
+            />
+         
+            <div className="todo-footer">
+               <Input 
+                  placeholder="Add New Task Here !"
+               />
+            </div>
          </div>
       )
-   } 
+   })
 
    return(
-      <div className="todo-card">
-         <div className="title"> Title </div>
-         <button className="delete card"> Delete </button>
-         <div className="todos collection">  
-            <ListItem itemList={dummyData}/>
-         </div>
-         {/* <FormAddItem/> */}
+      <div>
+         {todoObject}
       </div>
    )
 }

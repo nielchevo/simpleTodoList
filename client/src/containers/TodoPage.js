@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import Input from '../components/Input';
-import Button from '../components/Button';
 import ListItems from '../components/ListItem';
 import dummyData from '../dummyData';
+import TodoCard from '../components/TodoCard';
 
 class TodoPage extends Component {
     constructor(props) {
@@ -15,13 +14,16 @@ class TodoPage extends Component {
 
         this.state = dummyData;
 
-        this.viewTodoCollection = this.viewTodoCollection.bind(this);
+        this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
     }
 
-    viewTodoCollection(todoTitle, todoListItem) {
+    populateTodosCollection() {
         return (
-            <ListItems itemList={this.state.todos} deleteTodo={this.handleDelete} />
+            <TodoCard 
+                todoLists={this.state.todos} 
+                todoDeleteCard={this.onClickDeleteCard} 
+            />
         )
     }
 
@@ -29,7 +31,7 @@ class TodoPage extends Component {
         // Handle submit Todo.
     }
 
-    handleDelete = (id) => {
+    onClickDeleteCard = (id) => {
         const deletedTodos = this.state.todos.filter(todo => {
             return todo._id !== id
         })
@@ -50,9 +52,9 @@ class TodoPage extends Component {
     render() {
         return (
             <div>
-                <h1>Todo!</h1>
+                <h2>Todo Page !</h2>
            
-                {this.viewTodoCollection()}
+                {this.populateTodosCollection()}
             </div>
         )
     }

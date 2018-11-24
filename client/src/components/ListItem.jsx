@@ -4,34 +4,35 @@ const ListItem = ({itemList, deleteTodo}) => {
 	//console.log(itemList);
 
     const items = itemList.length ? (
-        itemList.map((item, index) => {
-            const Lists = item.list.map((List, _id) => {
-                //console.log(List);
-                return (<li className="Item" key={List._id}> {List.content} </li>)
-            })
+      itemList.map((item, index) => {
+         console.log(item);
 
-            return (
-                <div className="post card" key={item._id} onClick={() => deleteTodo(item._id)} >
-                    <div className="card-content">
-                        <p className="card-title">{item.title}</p>
-                        <ul className="List-Item" key={index}>
-                            {Lists}
-                        </ul>
-                    </div>
-                </div>
-            )
-        })
+         return (
+            <li 
+               className="todo-items" 
+               key={item._id} 
+               > 
+                  {item.content}
+                  <button className="btn-delete-item" onClick={()=> deleteTodo(item._id)}> 
+                     Delete !
+                  </button>
+                  <button>
+                     Mark is done !
+                  </button>
+            </li>
+         )
+      })
     ) : (
             <div className="center">
-                No Todo, please add one 
+                  No Todo, please add one 
             </div>
-        )
-        
-	
+         )
+         
+
 	return(
-		<div className="Todo-ListItem" key = {itemList._id}>
-				{items}
-		</div>
+      <div className="todos-collection">
+         {items}
+      </div>
 	)
 }
 
