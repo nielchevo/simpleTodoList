@@ -19,7 +19,7 @@ const TodoCard = ({todoLists, todoDeleteCard}) => {
       return (
          <div className="todo-card" key={todo._id}>
             <div className="todo-header">
-               <div className="title"> {todo.title} </div>
+               <div className="title"> <h4>{todo.title}</h4> </div>
                <button className="btn-delete-card"> Delete Card </button>
             </div>
             
@@ -28,11 +28,9 @@ const TodoCard = ({todoLists, todoDeleteCard}) => {
                deleteTodo={todoDeleteCard}
             />
          
-            <div className="todo-footer">
-               <Input 
-                  placeholder="Add New Task Here !"
-               />
-            </div>
+            <Input 
+               placeholder="Add New Task Here !"
+            />
          </div>
       )
    })
