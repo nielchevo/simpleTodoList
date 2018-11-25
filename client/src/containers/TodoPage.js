@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ListItems from '../components/ListItem';
 import dummyData from '../dummyData';
 import TodoCard from '../components/TodoCard';
+import AddTodo from './AddTodo';
 
 class TodoPage extends Component {
     constructor(props) {
@@ -40,9 +41,11 @@ class TodoPage extends Component {
         })
     }
     
-    addNewList() {
-        // logic for add new list``````
-        // input text 
+    addNewList = (newtodo) => {
+        let todos = [...this.state.todos, newtodo];
+        this.setState({
+            todos: todos
+        });
     }
 
     todoFormItem = () => {
@@ -55,6 +58,11 @@ class TodoPage extends Component {
                 <h2>Todo Page !</h2>
            
                 {this.populateTodosCollection()}
+
+                <br />
+                <hr align="center" width="90%" />
+                <br />
+                <AddTodo addNewList={this.addNewList} />
             </div>
         )
     }

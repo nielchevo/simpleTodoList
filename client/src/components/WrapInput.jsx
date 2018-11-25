@@ -3,10 +3,6 @@
 // Component for input field without label
 
 class WrapInput extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     handleChange = (e) => {
         const { id, name, onChange } = this.props;
         const newValue = e.target.value;

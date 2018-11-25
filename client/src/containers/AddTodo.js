@@ -42,7 +42,14 @@ class AddTodo extends Component {
 
     handleSubmitForm = (e) => {
         e.preventDefault();
-        console.log(this.state);
+        // temporary, need to match with backend
+        let todo = this.state;
+        todo._id = Math.random();
+        todo.list.forEach(list => {
+            list._id = Math.random()
+        });
+        // temporary
+        this.props.addNewList(todo);
     }
 
     renderInputList = () => {
