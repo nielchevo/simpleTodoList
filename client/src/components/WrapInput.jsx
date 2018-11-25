@@ -8,9 +8,9 @@ class WrapInput extends Component {
     }
 
     handleChange = (e) => {
-        const { name, onChange } = this.props;
+        const { id, name, onChange } = this.props;
         const newValue = e.target.value;
-        onChange(name, newValue);
+        onChange(id, name, newValue);
     }
 
     render() {
@@ -18,12 +18,12 @@ class WrapInput extends Component {
         return (
             <input
                 className="form-control"
-                id={props.id}
-                name={props.name}
-                type={props.type}
+                id={this.props.id}
+                name={this.props.name}
+                type={this.props.type}
                 value={value}
                 onChange={this.handleChange}
-                placeholder={props.placeholder}
+                placeholder={this.props.placeholder}
             />  
         );
     }

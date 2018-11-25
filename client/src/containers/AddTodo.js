@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
-import Input from '../components/Input';
 import Button from '../components/Button';
+import WrapInput from '../components/WrapInput';
 
 class AddTodo extends Component {
     constructor(props) {
@@ -16,13 +16,14 @@ class AddTodo extends Component {
         };
     }
 
-    handleChangeList = (e) => {
-        const { title, list } = this.state;
-        //console.log(e.target);
-        //console.log(updatelist[e.target.id]);
-        //console.log(this.state);        
-        list[e.target.id] = {content: e.target.value}
-        //console.log(list);
+    handleChangeList = (id, name, value) => {
+        const { list } = this.state;
+        let { title } = this.state;        
+        if (name === 'list') {
+            list[id] = { content: value }
+        } else if (name === 'title') {
+            title = value
+        }
         this.setState({
             title,
             list
@@ -49,15 +50,14 @@ class AddTodo extends Component {
         let inputlist = [];
         list.forEach((item, id) => {
             inputlist.push(
-                <input
+                <WrapInput
                     key={id}
-                    className="form-control"
                     id={id}
-                    name="list-todo"
+                    name="list"
                     type="text"
+                    placeholder="what to do"
                     value={item.content}
                     onChange={this.handleChangeList}
-                    placeholder="what to do"
                 />
             );
         })
@@ -77,14 +77,17 @@ class AddTodo extends Component {
         const list = this.renderInputList();
         return (
             <form className="container">
-                <Input
-                    type={"text"}
-                    title={"Title"}
-                    name={"todoTitle"}
-                    value=""
-                    placeholder={"ex. My Todos "}
-                    handleChange={() => { }}
+                <label htmlFor="todoTitle" className="form-label">Title</label>
+                <WrapInput
+                    id={"todoTitle"}
+                    name={"title"}
+                    type="text"
+                    placeholder="todo title"
+                    value={this.state.title}
+                    onChange={this.handleChangeList}
                 />
+                <br />
+                <label htmlFor="todoItem" className="form-label">Todo</label>
                 {list}
                 <br />
                 <hr />
