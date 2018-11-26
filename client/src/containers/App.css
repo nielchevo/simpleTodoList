@@ -39,10 +39,9 @@
   margin-top: 10px;
 }
 
-.title {
+.card-title {
   float: left;
 }
-
 .btn-delete-card {
   float: right;
 }

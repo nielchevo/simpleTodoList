@@ -9,28 +9,28 @@ const ListItem = ({itemList, deleteTodo}) => {
 
          return (
             <li 
-               className="todo-items" 
+               className="list-group-item list-group-item-action" 
                key={item._id} 
                > 
                   {item.content}
-                  <button className="btn-delete-item" onClick={()=> deleteTodo(item._id)}> 
+                  <button className="btn btn-primary" onClick={()=> deleteTodo(item._id)}> 
                      Delete !
                   </button>
-                  <button>
+                  <button className="btn btn-secondary">
                      Mark is done !
                   </button>
             </li>
          )
       })
     ) : (
-            <div className="center">
-                  No Todo, please add one 
-            </div>
+         <li className="list-group-item list-group-item-action">
+            No Todo, please add one 
+         </li>
          )
          
 
 	return(
-      <div className="todos-collection">
+      <div className="list-group">
          {items}
       </div>
 	)

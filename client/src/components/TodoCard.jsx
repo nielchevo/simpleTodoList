@@ -10,17 +10,17 @@ import ListItem from './ListItem'
    
 */
 
-const TodoCard = ({todoLists, todoDeleteCard}) => {
+const TodoCard = ({todoLists, todoDeleteCard, updateListItem}) => {
   
    const todoObject = todoLists.map( todo => {
       console.log(todo);
       let todoListItems = todo.list;
 
       return (
-         <div className="todo-card" key={todo._id}>
-            <div className="todo-header">
-               <div className="title"> <h4>{todo.title}</h4> </div>
-               <button className="btn-delete-card"> Delete Card </button>
+         <div className="card border-primary mb-3" key={todo._id}>
+            <div className="card-header">
+               <h4 className="card-title">{todo.title}</h4>
+               <button className="btn btn-primary"> Delete Card </button>
             </div>
             
             <ListItem 
