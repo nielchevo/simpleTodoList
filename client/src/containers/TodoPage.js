@@ -20,13 +20,18 @@ class TodoPage extends Component {
     }
 
     populateTodosCollection() {
-    
         return (
-           <TodoCard listCard={this.state.todos}/>
+           <TodoCard listCard={this.state.todos}
+                handleDeleteCard={this.onClickDeleteCard}
+                handleIsDoneItem={this.onClickIsDoneItem}
+                handleAddListItem={this.onSubmitAddItem}
+            />
         )
     }
 
     onClickDeleteCard = (id) => {
+        console.log("trigger from ListItem.onClick Delete event");
+
         const deletedTodos = this.state.todos.filter(todo => {
             return todo._id !== id
         })
@@ -34,7 +39,16 @@ class TodoPage extends Component {
             todos: deletedTodos
         })
     }
+
+    onClickIsDoneItem = (id) => {
+        console.log("trigger from ListItem.onClick is Done event");
+        
+    }
     
+    onSubmitAddItem = (id, content) => {
+        console.log("Trigger from TodoCard.onSubmit add new list item");
+    }
+
     addNewList = (newtodo) => {
         let todos = [...this.state.todos, newtodo];
         this.setState({

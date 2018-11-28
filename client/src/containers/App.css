@@ -33,7 +33,7 @@
 }
 
 /* Todo Card */
-.todo-card {
+.card {
   background-color: #eee;
   padding: 2px;
   margin-top: 10px;
@@ -42,14 +42,11 @@
 .card-title {
   float: left;
 }
-.btn-delete-card {
-  float: right;
-}
 
-.todo-header::after{
-  content: "";
-  display: block;
-  clear: both;
-}
 
 /* List Item */
+.btn-wrapper {
+  float: right;
+}
+  
+  
