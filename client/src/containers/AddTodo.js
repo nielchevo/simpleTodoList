@@ -2,18 +2,20 @@
 import Button from '../components/Button';
 import WrapInput from '../components/WrapInput';
 
+const initState = {
+    title: '',
+    list: [
+        {
+            content: ''
+        }
+    ]
+}
+
 class AddTodo extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            title: '',
-            list: [
-                {
-                    content: ''
-                }
-            ]
-        };
+        this.state = JSON.parse(JSON.stringify(initState));
     }
 
     handleChangeList = (id, name, value) => {
@@ -50,6 +52,9 @@ class AddTodo extends Component {
         });
         // temporary
         this.props.addNewList(todo);
+
+        // reset the input
+        this.setState(JSON.parse(JSON.stringify(initState)));
     }
 
     renderInputList = () => {
