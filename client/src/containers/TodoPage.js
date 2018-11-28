@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ListItems from '../components/ListItem';
 import dummyData from '../dummyData';
-import TodoCard from '../components/TodoCard';
 import AddTodo from './AddTodo';
+import TodoCard from '../containers/TodoCard';
 
 class TodoPage extends Component {
     constructor(props) {
@@ -20,16 +20,10 @@ class TodoPage extends Component {
     }
 
     populateTodosCollection() {
+    
         return (
-            <TodoCard 
-                todoLists={this.state.todos} 
-                todoDeleteCard={this.onClickDeleteCard} 
-            />
+           <TodoCard listCard={this.state.todos}/>
         )
-    }
-
-    handlePost() {
-        // Handle submit Todo.
     }
 
     onClickDeleteCard = (id) => {
@@ -47,10 +41,6 @@ class TodoPage extends Component {
             todos: todos
         });
     }
-
-    todoFormItem = () => {
-        // render FormAddItem
-    };
 
     render() {
         return (
