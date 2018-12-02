@@ -1,5 +1,4 @@
 ﻿import React, { Component } from 'react';
-import axios from 'axios';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Auth from '../modules/Auth';
@@ -28,7 +27,7 @@ class LoginContainer extends Component {
 
         this.Auth.login(this.state.username, this.state.password, (res => {
             // Temporary, remove after redux?
-            console.log('login page: ', res);
+            //console.log('login page: ', res);
             this.props.history.push('/');
         }));
     }

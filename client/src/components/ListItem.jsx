@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ListItem = ({itemList, deleteTodo, isDoneTodo}) => {
-   console.log(itemList)
+   //console.log(itemList)
     const items = itemList.length ? (
       itemList.map((item, index) => {
          return (

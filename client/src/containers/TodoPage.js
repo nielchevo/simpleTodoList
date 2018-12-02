@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ListItems from '../components/ListItem';
 import dummyData from '../dummyData';
 import AddTodo from './AddTodo';
 import TodoCard from '../containers/TodoCard';
 import Auth from '../modules/Auth';
 
-const api_get_todo = 'http://localhost:5000/user/paul3/todo'; // need to be more dynamic, following user's username
+const api_get_todo = 'http://localhost:5000/user/paul1/todo'; // need to be more dynamic, following user's username
 
 class TodoPage extends Component {
     constructor(props) {
         super();
         
-        //this.state = {
-        //    title: '',
-        //    lists: []
-        //}
+        // this.state = {
+        //     todos : [
+        //         // this is the initial state, following the dummy data
+        //         //title: '',
+        //         //lists: []
+        //     ]
+        // }
 
         this.state = dummyData;
 
@@ -26,7 +28,6 @@ class TodoPage extends Component {
     }
 
     componentDidMount() {
-        
         //console.log('start consuming the api, token:', this.Auth.getToken());
         axios.get(api_get_todo, { headers: { Authorization: 'Token ' + this.Auth.getToken() } })
             .then(res => {
@@ -34,7 +35,7 @@ class TodoPage extends Component {
                 Array.prototype.push.apply(todos, res.data);
                 this.setState({
                     todos: todos
-                });
+                });                
                 // STILL NOT WORKING, WIP
             })
             .catch(err => {
