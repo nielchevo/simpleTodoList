@@ -1,29 +1,20 @@
 import React from 'react';
+import Auth from '../modules/Auth';
+import SignedInLinks from './SignedInLinks';
+import SignedOutLinks from './SignedOutLinks';
 
-const NavBar = (props) => {
+const NavBar = () => {
     
-    const onClickHandle = (e) => {
-        console.log('onClickHandle() event');
-    }
+    var auth = new Auth();
+    console.log(auth.isUserAuthenticated());
+    const links = auth.isUserAuthenticated() ? 
+        <SignedInLinks /> : <SignedOutLinks />;
 
     return(
         <nav className="navbar navbar-expand-sm navbar-right bg-light justify-content-end">
-            <ul className="navbar-nav">
-                {/* TODO: convert nav-item to component so it can handle the onclick 'active' 
-                    https://stackoverflow.com/questions/22461129/switch-class-on-tabs-with-react-js*/}
-                <li className="nav-item active">
-                    <a className="nav-link" href="#section" onClick={onClickHandle}>Home</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#section" onClick={onClickHandle}>About</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#section"  onClick={onClickHandle}>Login</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#section" onClick={onClickHandle}>Register</a>
-                </li>
-            </ul>
+            {/* TODO: convert nav-item to component so it can handle the onclick 'active' 
+                https://stackoverflow.com/questions/22461129/switch-class-on-tabs-with-react-js*/}
+            { links }
         </nav>
     );
 };
