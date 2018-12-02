@@ -4,8 +4,9 @@ import ListItems from '../components/ListItem';
 import dummyData from '../dummyData';
 import AddTodo from './AddTodo';
 import TodoCard from '../containers/TodoCard';
+import Auth from '../modules/Auth';
 
-const authStr = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjViZDc0ZGUwOWFiM2M5MjVhZGM2NTc1MSIsInVzZXJuYW1lIjoicGF1bDEifSwiaWF0IjoxNTQzNDI4MTQ2LCJleHAiOjE1NDM0Mjk5NDZ9.YHq3KtrEi1YO0HbdbYaeH_93rlQOj-xBwo6iCPSa8Ns';
+const api_get_todo = 'http://localhost:5000/user/paul3/todo'; // need to be more dynamic, following user's username
 
 class TodoPage extends Component {
     constructor(props) {
@@ -20,15 +21,25 @@ class TodoPage extends Component {
 
         this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
+
+        this.Auth = new Auth();
     }
 
     componentDidMount() {
-        console.log('starting consuming the api');
-        axios.get('http://localhost:5000/user/paul1/todo', {headers: {Authorization: 'Token ' + authStr}})
-        .then(res => {
-            console.log(res.data)
-        })
-        .catch()
+        
+        //console.log('start consuming the api, token:', this.Auth.getToken());
+        axios.get(api_get_todo, { headers: { Authorization: 'Token ' + this.Auth.getToken() } })
+            .then(res => {
+                let todos = [...this.state.todos];
+                Array.prototype.push.apply(todos, res.data);
+                this.setState({
+                    todos: todos
+                });
+                // STILL NOT WORKING, WIP
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     populateTodosCollection() {

@@ -2,6 +2,7 @@
 import axios from 'axios';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import Auth from '../modules/Auth';
 
 class LoginContainer extends Component {
     constructor(props) {
@@ -18,28 +19,18 @@ class LoginContainer extends Component {
 
         // debug
         this.debugLogState = this.debugLogState.bind(this);
+
+        this.Auth = new Auth();
     }
 
     handleSubmit(e) {
-        
-        //console.log(this.state.username);
-        //console.log(this.state.password);
-        axios.post('http://localhost:5000/user/login', {
-            username: this.state.username,
-            password: this.state.password
-            })
-            .then(response => {
-                if (response) {
-                    console.log(response);
-                }
-            })
-            .catch(err => {
-                if (err) {
-                    console.log("error: ", err);
-                }
-            });
-
         e.preventDefault();
+
+        this.Auth.login(this.state.username, this.state.password, (res => {
+            // Temporary, remove after redux?
+            console.log('login page: ', res);
+            this.props.history.push('/');
+        }));
     }
 
     handleClearForm() {
