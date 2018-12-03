@@ -4,11 +4,18 @@ import {BrowserRouter} from 'react-router-dom';
 import './index.css';
 import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import TodoReducer from './reducer/rootReducer';
+
+const store = createStore(TodoReducer);
 
 ReactDOM.render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
+    <Provider store={store}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </Provider>,
 document.getElementById('root')
 );
 

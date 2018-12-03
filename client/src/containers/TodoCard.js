@@ -14,10 +14,6 @@ class TodoCard extends React.Component {
       this.handleOnSubmit = this.handleOnSubmit.bind(this);
    }
    
-//    componentDidMount() {
-//       this.setState({todos: this.props.listCard});
-//    }
-
    componentWillReceiveProps(nextProps) {
       // https://stackoverflow.com/questions/32414308/updating-state-on-props-change-in-react-form
       //console.log('TODO CARD WILL REC, props:', nextProps);
@@ -36,7 +32,7 @@ class TodoCard extends React.Component {
    }
 
    onRenderListItem() {  
-      console.log("do we also call this evertime?", this.state.todos);
+
       if (this.state.todos.length) {            
             let renderList = this.state.todos.map(item => {
             return (
