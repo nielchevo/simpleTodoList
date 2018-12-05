@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import dummyData from '../dummyData';
+import { bindActionCreators } from 'redux';
 import AddTodo from './AddTodo';
 import TodoCard from '../containers/TodoCard';
 import Auth from '../modules/Auth';
+import * as TodoActions from '../actions/TodoActions';
 
 const api_get_todo = 'http://localhost:5000/user/paul1/todo'; // need to be more dynamic, following user's username
 
@@ -13,7 +14,6 @@ class TodoPage extends Component {
         super();
         
         console.log(props);
-        this.state = props.todos; // Get from redux state
 
         this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
@@ -39,18 +39,16 @@ class TodoPage extends Component {
 
     populateTodosCollection() {
         return (
-           <TodoCard listCard={this.state.todos}
-                handleDeleteCard={this.onClickDeleteCard}
+           <TodoCard listCard={this.props.todo}
+                handleDeleteCard={this.onClickDeleteItem}
                 handleIsDoneItem={this.onClickIsDoneItem}
                 handleAddListItem={this.onSubmitAddItem}
             />
         )
     }
 
-    onClickDeleteCard = (id) => {
+    onClickDeleteItem = (id) => {
         console.log("trigger from ListItem.onClick Delete event");
-      
-        this.props.dispatchDeleteTodo(id); 
         // const deletedTodos = this.state.todos.filter(todo => {
         //     return todo._id !== id
         // })
@@ -61,12 +59,12 @@ class TodoPage extends Component {
 
     onClickIsDoneItem = (id, listID, isDone) => {
         console.log("trigger from ListItem.onClick is Done event");
-        this.props.dispatchIsDoneItem( id, listID, isDone);
+        
     }
     
     onSubmitAddItem = (id, content) => {
         console.log("Trigger from TodoCard.onSubmit add new list item");
-        this.props.dispatchAddTodoItem(id, content);
+        
     }
 
     addNewList = (newtodo) => {
@@ -92,18 +90,17 @@ class TodoPage extends Component {
     }
 }
 
-
 const mapStateToProps = state => ({
-    todos: state
+    todo: state.todoReducer.todos
 })
 
-const mapDispatchToProps = (dispatch) => {
-    return{
-        dispatchDeleteTodo: (id) => { dispatch({type: 'DELETE_TODO', todoID: id}); },
-        dispatchAddTodoItem: (id, content) => { dispatch({type: 'ADD_TODO', todoID: id, content: content}); },
-        dispatchIsDoneItem: (id, listID, isDone) => { dispatch({type: 'TODO_COMPLETED', id: id, listId: listID, isDone: isDone}); },
-        
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators(TodoActions, dispatch)
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoPage);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+    )(TodoPage);
