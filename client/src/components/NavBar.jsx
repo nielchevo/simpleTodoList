@@ -6,7 +6,7 @@ import SignedOutLinks from './SignedOutLinks';
 const NavBar = () => {
     
     var auth = new Auth();
-    console.log(auth.isUserAuthenticated());
+    console.log("navbar is user authenticated:", auth.isUserAuthenticated());
     const links = auth.isUserAuthenticated() ? 
         <SignedInLinks /> : <SignedOutLinks />;
 

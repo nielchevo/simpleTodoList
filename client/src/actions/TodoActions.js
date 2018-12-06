@@ -1,9 +1,9 @@
 
 import * as Types from '../constants/ActionTypes';
 
-export const AddTodoAction = id => ({
+export const AddTodoAction = (newtodo) => ({
     type: Types.ADD_TODO,
-    id: id
+    newtodo: newtodo
 })
 
 export const DeleteTodoAction = id => ({

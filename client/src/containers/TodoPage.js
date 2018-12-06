@@ -13,7 +13,7 @@ class TodoPage extends Component {
     constructor(props) {
         super();
         
-        console.log(props);
+        console.log("todo page todos from props:", props);
 
         this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
@@ -29,8 +29,7 @@ class TodoPage extends Component {
                 Array.prototype.push.apply(todos, res.data);
                 this.setState({
                     todos: todos
-                });                
-                // STILL NOT WORKING, WIP
+                });
             })
             .catch(err => {
                 console.log(err);
@@ -39,7 +38,7 @@ class TodoPage extends Component {
 
     populateTodosCollection() {
         return (
-           <TodoCard listCard={this.props.todo}
+           <TodoCard listCard={this.props.todos}
                 handleDeleteCard={this.onClickDeleteItem}
                 handleIsDoneItem={this.onClickIsDoneItem}
                 handleAddListItem={this.onSubmitAddItem}
@@ -68,10 +67,12 @@ class TodoPage extends Component {
     }
 
     addNewList = (newtodo) => {
-        let todos = [...this.state.todos, newtodo];
-        this.setState({
-            todos: todos
-        });
+        //let todos = [...this.state.todos, newtodo];
+        //this.setState({
+        //    todos: todos
+        //});
+        // change this to dispatch action add
+        this.props.actions.AddTodoAction(newtodo);
     }
 
     render() {
@@ -90,8 +91,8 @@ class TodoPage extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    todo: state.todoReducer.todos
+const mapStateToProps = (state) => ({
+    todos: state.todoReducer.todos
 })
 
 const mapDispatchToProps = dispatch => {

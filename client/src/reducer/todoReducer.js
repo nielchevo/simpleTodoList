@@ -2,18 +2,22 @@ import dummyData from '../dummyData';
 import * as Types from '../constants/ActionTypes';
 
 const initialState = {
-   todos: dummyData.todos,
-   isPublic : 'test2'
+    todos: []
+    //todos: dummyData
 }
 
 export default function todoReducer(state = initialState, action) {
     
     switch(action.type) {
-        case Types.ADD_TODO :
-            console.log('ADD');
+        case Types.ADD_TODO:
+            console.log("todo reducer, add todo:", action.newtodo);
+            let todos = [...state.todos, action.newtodo];
+            return {
+                todos
+            }
             break;
-        case Types.DELETE_TODO :
-            console.log('DELETE'); 
+        case Types.DELETE_TODO:
+            console.log('DELETE');
             break;
         case Types.EDIT_TODO :
             console.log('EDIT');
@@ -23,6 +27,7 @@ export default function todoReducer(state = initialState, action) {
             break;
         default: 
             console.log('default reducer');
-            return state;
+            break;
     }
+    return state;
 }
