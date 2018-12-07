@@ -4,7 +4,7 @@ const api_login = 'http://localhost:5000/user/login'
 
 class Auth {
     constructor() {
-        this.getToken = this.getToken.bind(this);
+        //this.getToken = this.getToken.bind(this);
         this.isUserAuthenticated = this.isUserAuthenticated.bind(this);
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -14,7 +14,7 @@ class Auth {
         //
     }
 
-    getToken() {
+    static getToken() {
         return localStorage.getItem('syot_token');
     }
 

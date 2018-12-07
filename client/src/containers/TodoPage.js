@@ -36,10 +36,15 @@ class TodoPage extends Component {
         //     });
         
         // Fetch user todos data here. 
-        this.props.actions.fetchTodo();
+        this.props.actions.fetchTodo('paul3');
+    }
+
+    componentWillReceiveProps() {
+        //this.populateTodosCollection();
     }
 
     populateTodosCollection() {
+        console.log("populate again:", this.props);
         return (
            <TodoCard listCard={this.props.todos}
                 handleDeleteCard={this.onClickDeleteItem}

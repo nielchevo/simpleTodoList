@@ -16,7 +16,7 @@ class TodoCard extends React.Component {
    
    componentWillReceiveProps(nextProps) {
       // https://stackoverflow.com/questions/32414308/updating-state-on-props-change-in-react-form
-      //console.log('TODO CARD WILL REC, props:', nextProps);
+      console.log('TODO CARD WILL REC, props:', nextProps);
       this.setState({todos: nextProps.listCard});
    }
 
@@ -32,8 +32,8 @@ class TodoCard extends React.Component {
    }
 
    onRenderListItem() {  
-
-      if (this.props.length) {            
+       console.log("todo card on render list item, length:", this.props.listCard.length);
+      if (this.props.listCard.length) {            
             let renderList = this.state.todos.map(item => {
             return (
                   <div className="card border-primary mb-3" key={item._id}>
