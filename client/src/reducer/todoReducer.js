@@ -1,9 +1,7 @@
-import dummyData from '../dummyData';
 import * as Types from '../constants/ActionTypes';
 
 const initialState = {
     todos: []
-    //todos: dummyData
 }
 
 export default function todoReducer(state = initialState, action) {
@@ -24,7 +22,7 @@ export default function todoReducer(state = initialState, action) {
             break;
         case Types.FETCH_TODO :
             console.log('FETCH');
-            break;
+            return "this fetch todo";
         default: 
             console.log('default reducer');
             break;

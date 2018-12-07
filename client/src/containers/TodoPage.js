@@ -23,17 +23,20 @@ class TodoPage extends Component {
 
     componentDidMount() {
         //console.log('start consuming the api, token:', this.Auth.getToken());
-        axios.get(api_get_todo, { headers: { Authorization: 'Token ' + this.Auth.getToken() } })
-            .then(res => {
-                let todos = [...this.state.todos];
-                Array.prototype.push.apply(todos, res.data);
-                this.setState({
-                    todos: todos
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        // axios.get(api_get_todo, { headers: { Authorization: 'Token ' + this.Auth.getToken() } })
+        //     .then(res => {
+        //         let todos = [...this.state.todos];
+        //         Array.prototype.push.apply(todos, res.data);
+        //         this.setState({
+        //             todos: todos
+        //         });
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
+        
+        // Fetch user todos data here. 
+        this.props.actions.fetchTodo();
     }
 
     populateTodosCollection() {
@@ -48,12 +51,6 @@ class TodoPage extends Component {
 
     onClickDeleteItem = (id) => {
         console.log("trigger from ListItem.onClick Delete event");
-        // const deletedTodos = this.state.todos.filter(todo => {
-        //     return todo._id !== id
-        // })
-        // this.setState({
-        //     todos: deletedTodos
-        // })
     }
 
     onClickIsDoneItem = (id, listID, isDone) => {
@@ -67,10 +64,6 @@ class TodoPage extends Component {
     }
 
     addNewList = (newtodo) => {
-        //let todos = [...this.state.todos, newtodo];
-        //this.setState({
-        //    todos: todos
-        //});
         // change this to dispatch action add
         this.props.actions.AddTodoAction(newtodo);
     }

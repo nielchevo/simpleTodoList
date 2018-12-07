@@ -6,10 +6,10 @@ class TodoCard extends React.Component {
       super(props);
       
       this.state = {
-         todos: props.listCard,
          inputItemList: ''
       }
       
+      console.log('TodoCard.js props : ' , props)
       this.handleOnTextChange = this.handleOnTextChange.bind(this);
       this.handleOnSubmit = this.handleOnSubmit.bind(this);
    }
@@ -33,7 +33,7 @@ class TodoCard extends React.Component {
 
    onRenderListItem() {  
 
-      if (this.state.todos.length) {            
+      if (this.props.length) {            
             let renderList = this.state.todos.map(item => {
             return (
                   <div className="card border-primary mb-3" key={item._id}>
