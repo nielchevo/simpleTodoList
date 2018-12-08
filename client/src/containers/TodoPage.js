@@ -21,21 +21,7 @@ class TodoPage extends Component {
         this.Auth = new Auth();
     }
 
-    componentDidMount() {
-        //console.log('start consuming the api, token:', this.Auth.getToken());
-        // axios.get(api_get_todo, { headers: { Authorization: 'Token ' + this.Auth.getToken() } })
-        //     .then(res => {
-        //         let todos = [...this.state.todos];
-        //         Array.prototype.push.apply(todos, res.data);
-        //         this.setState({
-        //             todos: todos
-        //         });
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //     });
-        
-        // Fetch user todos data here. 
+    componentDidMount() {        
         this.props.actions.fetchTodo('paul3');
     }
 
