@@ -6,10 +6,10 @@ import Auth from '../modules/Auth';
 
 const APIUrl = 'http://localhost:5000/';
 // dummy Auth Token , if this fail set token lifespan to '1w' in back-end configs.js
-const tokenUser = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVjMDc2ZDY2N2M1MGMzMjMzODk2OGU0YSIsInVzZXJuYW1lIjoibmllbHRvZG8ifSwiaWF0IjoxNTQ0MTYyNTk4LCJleHAiOjE1NDQxNjQzOTh9.4ThiobYdnYd0YlH65oSA9dSOaF8MmrlSzzm-KBtOCQ0'; 
+const tokenUser = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVjMDZiNjE4NjNhN2Y4MmIzNDBlOWQ1NCIsInVzZXJuYW1lIjoibmllbHRvZG8ifSwiaWF0IjoxNTQ0NDYzOTk5LCJleHAiOjE1NDQ0NjU3OTl9.om9h9KrZbQZkxqg3tAW5MUk4Sr-12ma4h-JycTc--JA'; 
 
 const GetHeader_config = {
-    headers: { Authorization: 'Token ' + Auth.getToken() }
+    headers: { Authorization: 'Token ' + tokenUser }
 }
 
 export const addTodoAction = (newtodo) => ({
@@ -28,7 +28,6 @@ export const editTodoAction = (id, todos) => ({
     content: todos
 })
 
-// Sync function to Reducer
 export const fetchTodoAction = (todos) => ({
     type: Types.FETCH_TODO,
     payload: {
@@ -36,12 +35,9 @@ export const fetchTodoAction = (todos) => ({
     }
 })
 
-// Async function handle fetch request
 export const fetchTodo = (username) => {
     return (dispatch) => {
-        //console.log("url:", api.get_todo(username));
-        //console.log("header:", GetHeader_config);
-        return Axios.get(api.get_todo(username), GetHeader_config)
+        return Axios.get('http://localhost:5000/todos', GetHeader_config)
             .then(response => {
                 // success, pass to todoReducer
                 console.log("resp:", response);

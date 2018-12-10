@@ -7,8 +7,6 @@ import TodoCard from '../containers/TodoCard';
 import Auth from '../modules/Auth';
 import * as TodoActions from '../actions/TodoActions';
 
-const api_get_todo = 'http://localhost:5000/user/paul1/todo'; // need to be more dynamic, following user's username
-
 class TodoPage extends Component {
     constructor(props) {
         super();
