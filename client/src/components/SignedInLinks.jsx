@@ -1,7 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const SignedInLinks = () => {
+const SignedInLinks = (props) => {
+    console.log('signed props:', props);
     return (
         <ul className="navbar-nav">
             <li className="nav-item">
@@ -11,7 +12,7 @@ const SignedInLinks = () => {
                 <NavLink className="nav-link" to="/about">About</NavLink>
             </li>
             <li className="nav-item">
-                <NavLink className="nav-link" to="/logout">Logout</NavLink>
+                <NavLink className="nav-link" to="/" onClick={() => props.onLogoutClick()}>Logout</NavLink>
             </li>
         </ul>
     )

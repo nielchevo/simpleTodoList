@@ -56,7 +56,7 @@ class TodoPage extends Component {
 
     addNewList = (newtodo) => {
         // change this to dispatch action add
-        this.props.actions.AddTodoAction(newtodo);
+        this.props.actions.addTodoAction(newtodo);
     }
 
     render() {
@@ -76,7 +76,7 @@ class TodoPage extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todoReducer.todos
+    todos: state.todo.todos
 })
 
 const mapDispatchToProps = dispatch => {
