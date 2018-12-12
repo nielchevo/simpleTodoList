@@ -14,10 +14,8 @@ const initState = {
 class AddTodo extends Component {
    constructor(props) {
       super(props);
-      console.log(props);
       this.state = JSON.parse(JSON.stringify(initState));
    }
-
 
     handleChangeList = (id, name, value) => {
         const { list } = this.state;
@@ -49,8 +47,7 @@ class AddTodo extends Component {
       this.props.onAddTodo(this.state);
       // reset the input
       this.setState(JSON.parse(JSON.stringify(initState)));
-  }
-
+   }
 
     renderInputList = () => {
         const { list } = this.state;
@@ -106,6 +103,8 @@ class AddTodo extends Component {
             </form>    
         )
     }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
      onAddTodo: (todoList) => { dispatch(addTodo(todoList)); }

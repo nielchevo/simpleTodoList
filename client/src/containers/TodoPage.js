@@ -10,7 +10,7 @@ class TodoPage extends Component {
     constructor(props) {
         super();
         
-        console.log("todo page todos from props:", props);
+        console.log("TodoPage props:", props);
 
         this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
