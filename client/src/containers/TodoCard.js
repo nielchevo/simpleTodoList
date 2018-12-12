@@ -34,7 +34,8 @@ class TodoCard extends React.Component {
    onRenderListItem() {  
        console.log("todo card on render list item, length:", this.props.listCard.length);
       if (this.props.listCard.length) {            
-            let renderList = this.state.todos.map(item => {
+            //let renderList = this.state.todos.map(item => {
+            let renderList = this.props.listCard.map(item => {
             return (
                   <div className="card border-primary mb-3" key={item._id}>
                   <div className="card-header">
