@@ -27,8 +27,6 @@ class TodoCard extends React.Component {
 
    handleOnSubmit(e) {
       e.preventDefault();
-
-      console.log('OnSubmit textInput: ' + this.state.inputItemList +" id " + e.target.id);
    }
 
    onRenderListItem() {         

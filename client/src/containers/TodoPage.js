@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { bindActionCreators } from 'redux';
 import AddTodo from './AddTodo';
 import TodoCard from '../containers/TodoCard';
 import Auth from '../modules/Auth';
 import * as TodoActions from '../actions/TodoActions';
 
-const api_get_todo = 'http://localhost:5000/user/paul1/todo'; // need to be more dynamic, following user's username
-
 class TodoPage extends Component {
     constructor(props) {
         super();
         
-        console.log("todo page todos from props:", props);
+        console.log("TodoPage props:", props);
 
         this.populateTodosCollection= this.populateTodosCollection.bind(this);
         this.addNewList = this.addNewList.bind(this);
@@ -26,32 +23,34 @@ class TodoPage extends Component {
     }
 
     componentWillReceiveProps() {
-        //this.populateTodosCollection();
+      //this.populateTodosCollection();
     }
 
     populateTodosCollection() {
-        console.log("populate again:", this.props);
         return (
-           <TodoCard listCard={this.props.todos}
-                handleDeleteCard={this.onClickDeleteItem}
-                handleIsDoneItem={this.onClickIsDoneItem}
-                handleAddListItem={this.onSubmitAddItem}
+            <TodoCard listCard={this.props.todos}
+               handleDeleteCard={this.onClickDeleteCard}
+               handleIsDoneItem={this.onClickIsDoneItem}
+               handleAddListItem={this.onSubmitAddItem}
+               handleDeleteListItem={this.onClickDeleteItem}
             />
         )
     }
 
-    onClickDeleteItem = (id) => {
-        console.log("trigger from ListItem.onClick Delete event");
+    onClickDeleteCard = (cardId) => {
+      console.log("trigger from ListItem.onClick Delete event cardID: ", cardId);
     }
 
     onClickIsDoneItem = (id, listID, isDone) => {
-        console.log("trigger from ListItem.onClick is Done event");
-        
+      console.log("trigger from ListItem.onClick is Done event");
     }
     
+    onClickDeleteItem = (itemId) => {
+      console.log("trigger from ListItem.onClick Delete Item event itemID ", itemId);
+    }
+
     onSubmitAddItem = (id, content) => {
-        console.log("Trigger from TodoCard.onSubmit add new list item");
-        
+      console.log("Trigger from TodoCard.onSubmit add new list item");
     }
 
     addNewList = (newtodo) => {

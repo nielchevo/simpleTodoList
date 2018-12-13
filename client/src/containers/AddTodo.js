@@ -1,22 +1,21 @@
 ﻿import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addTodo } from '../actions/TodoActions';
 import Button from '../components/Button';
 import WrapInput from '../components/WrapInput';
 
 const initState = {
-    title: '',
-    list: [
-        {
-            content: ''
-        }
-    ]
+   title: '',
+   list: [{
+         content: ''
+      }]
 }
 
 class AddTodo extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = JSON.parse(JSON.stringify(initState));
-    }
+   constructor(props) {
+      super(props);
+      this.state = JSON.parse(JSON.stringify(initState));
+   }
 
     handleChangeList = (id, name, value) => {
         const { list } = this.state;
@@ -42,20 +41,13 @@ class AddTodo extends Component {
         });
     }
 
-    handleSubmitForm = (e) => {
-        e.preventDefault();
-        // temporary, need to match with backend
-        let todo = this.state;
-        todo._id = Math.random();
-        todo.list.forEach(list => {
-            list._id = Math.random()
-        });
-        // temporary
-        this.props.addNewList(todo);
-
-        // reset the input
-        this.setState(JSON.parse(JSON.stringify(initState)));
-    }
+   handleSubmitForm = (e) => {
+      e.preventDefault();
+      
+      this.props.onAddTodo(this.state);
+      // reset the input
+      this.setState(JSON.parse(JSON.stringify(initState)));
+   }
 
     renderInputList = () => {
         const { list } = this.state;
@@ -113,4 +105,10 @@ class AddTodo extends Component {
     }
 }
 
-export default AddTodo
+const mapDispatchToProps = (dispatch) => {
+  return {
+     onAddTodo: (todoList) => { dispatch(addTodo(todoList)); }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(AddTodo)
