@@ -4,37 +4,25 @@ import './App.css';
 import TodoPage from './TodoPage';
 import Login from './Login';
 import NavBar from '../components/NavBar';
-import { loginUser, logoutUser } from '../actions/AuthActions';
+import { SecuredRoute } from '../components/SecuredRoute';
+import { logoutUser } from '../actions/AuthActions';
 
 class HomePage extends Component {
     render() {
-        const { dispatch, isAuthenticated, errorMessage } = this.props;   
-        if (isAuthenticated) {
-            return (
-                <div className="wrapper">
-                    <NavBar
-                        isAuthenticated={isAuthenticated}
-                        dispatch={dispatch}
-                        onLogoutClick={() => dispatch(logoutUser())}
-                    />
+        const { dispatch, isAuthenticated, errorMessage } = this.props;
+        return (
+            <div className="wrapper">
+                <NavBar
+                    isAuthenticated={isAuthenticated}
+                    dispatch={dispatch}
+                    onLogoutClick={() => dispatch(logoutUser())}
+                />
 
-                    <div className="container">
-                        <TodoPage />
-                    </div>
-                </div>
-            );
-        } else {
-            return (
                 <div className="container">
-                    <Login
-                        errorMessage={errorMessage}
-                        dispatch={dispatch}
-                        onLoginClick={creds => dispatch(loginUser(creds))}
-                    />
+                    <TodoPage />
                 </div>
-            );
-        }
-
+            </div>
+        );
     }
 }
 
