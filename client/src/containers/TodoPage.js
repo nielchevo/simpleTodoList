@@ -19,7 +19,7 @@ class TodoPage extends Component {
     }
 
     componentDidMount() {        
-        this.props.actions.fetchTodo('paul3');
+        this.props.actions.fetchTodo();
     }
 
     componentWillReceiveProps() {
