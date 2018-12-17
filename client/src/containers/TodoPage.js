@@ -30,9 +30,7 @@ class TodoPage extends Component {
         return (
             <TodoCard listCard={this.props.todos}
                handleDeleteCard={this.onClickDeleteCard}
-               handleIsDoneItem={this.onClickIsDoneItem}
                handleAddListItem={this.onSubmitAddItem}
-               handleDeleteListItem={this.onClickDeleteItem}
             />
         )
     }

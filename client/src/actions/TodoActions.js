@@ -26,10 +26,15 @@ export const addTodo = (listItem) => {
    };
 };
 
-export const deleteTodoAction = id => ({
+export const deleteTodoAction = (cardID, itemID) => ({
     type: Types.DELETE_TODO, 
-    id: id
+    id: cardID,
+    itemId : itemID
 })
+
+export const deleteTodo = (cardID, itemID) => {
+    console.log('cardID, itemID : ', cardID, itemID)
+}
 
 export const editTodoAction = (id, todos) => ({
     type: Types.EDIT_TODO, 

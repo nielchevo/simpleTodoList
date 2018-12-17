@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ListItem = ({itemList, deleteTodo, isDoneTodo}) => {
+const ListItem = ({cardID, itemList, deleteTodo, isDoneTodo}) => {
 
     const items = itemList.length ? (
       itemList.map((item, index) => {
@@ -11,10 +11,10 @@ const ListItem = ({itemList, deleteTodo, isDoneTodo}) => {
                > 
                   {item.content}
                   <div className="btn-wrapper">
-                     <button className="btn btn-primary" onClick={()=> deleteTodo(item._id)}> 
+                     <button className="btn btn-primary" onClick={(e)=> deleteTodo(cardID, item._id)}> 
                         Delete !
                      </button>
-                     <button className="btn btn-secondary" onClick={()=> isDoneTodo(item._id)}>
+                     <button className="btn btn-secondary" onClick={ e => isDoneTodo(cardID, item._id)}>
                         Complete
                      </button>
                   </div>

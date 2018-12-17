@@ -1,17 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { deleteTodo } from '../actions/TodoActions';
 import ListItem from '../components/ListItem';
 
 class TodoCard extends React.Component {
    constructor(props){
       super(props);
       
+      // This local state for handle text input for new item list
       this.state = {
          inputItemList: ''
       }
-      
-      console.log('TodoCard.js props : ' , props)
-      this.handleOnTextChange = this.handleOnTextChange.bind(this);
-      this.handleOnSubmit = this.handleOnSubmit.bind(this);
+
+      this.handleDeleteItem = this.handleDeleteItem.bind(this);
    }
    
    //componentWillReceiveProps(nextProps) {
@@ -29,12 +30,15 @@ class TodoCard extends React.Component {
       e.preventDefault();
    }
 
+   handleDeleteItem(cardID, itemID) {
+      console.log('cardID, itemID : ', cardID, itemID);
+
+   }
+
    onRenderListItem() {         
-       const listCard = this.props.listCard;
-       console.log("todo card on render list item, length:", listCard.length);
-       if (listCard.length) {            
+       if (this.props.todos.length) {            
             //let renderList = this.state.todos.map(item => {
-            let renderList = listCard.map(item => {
+            let renderList = this.props.todos.map(item => {
             return (
                   <div className="card border-primary mb-3" key={item._id}>
                   <div className="card-header">
@@ -43,9 +47,10 @@ class TodoCard extends React.Component {
                   </div>
                   
                   <ListItem 
-                        itemList={item.list} 
-                        deleteTodo={this.props.handleDeleteCard}
-                        isDoneTodo={this.props.handleIsDoneItem}
+                     cardID={item._id}
+                     itemList={item.list} 
+                     deleteTodo={this.handleDeleteItem}
+                     isDoneTodo={this.props.handleIsDoneItem}
                   />
 
                   <form className="form-group" id={item._id} onSubmit={ this.handleOnSubmit}>
@@ -76,4 +81,14 @@ class TodoCard extends React.Component {
    }
 }
 
-export default TodoCard
+const mapStateToProps = (state) => {
+   return { todos: state.todo.todos }
+} 
+
+const mapDispatchToProps = dispatch => {
+   return {
+      onDeleteTodo: (cardID, itemID) => { dispatch(deleteTodo(cardID, itemID)); }
+   }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoCard)

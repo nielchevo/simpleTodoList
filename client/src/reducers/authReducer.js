@@ -39,7 +39,6 @@ export default function auth(state = initialAuthState, action) {
                 isAuthenticated: false
             })
         default:
-            console.log('auth default reducer');
             return state
     }
 }
