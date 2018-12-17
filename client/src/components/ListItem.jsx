@@ -1,9 +1,10 @@
 import React from 'react';
 
-const ListItem = ({cardID, itemList, deleteTodo, isDoneTodo}) => {
+const ListItem = ({cardID, itemList, deleteItemList, itemIsCompleted}) => {
+    // note: cardID act as key to known where itemlist we want to modify.
 
     const items = itemList.length ? (
-      itemList.map((item, index) => {
+      itemList.map((item) => {
          return (
             <li 
                className="list-group-item list-group-item-action" 
@@ -11,10 +12,10 @@ const ListItem = ({cardID, itemList, deleteTodo, isDoneTodo}) => {
                > 
                   {item.content}
                   <div className="btn-wrapper">
-                     <button className="btn btn-primary" onClick={(e)=> deleteTodo(cardID, item._id)}> 
+                     <button className="btn btn-primary" onClick={ ()=> deleteItemList(item._id, cardID) }> 
                         Delete !
                      </button>
-                     <button className="btn btn-secondary" onClick={ e => isDoneTodo(cardID, item._id)}>
+                     <button className="btn btn-secondary" onClick={ () => itemIsCompleted(item._id, cardID) }>
                         Complete
                      </button>
                   </div>
