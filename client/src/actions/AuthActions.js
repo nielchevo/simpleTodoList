@@ -43,6 +43,7 @@ export function loginUser(credential) {
                 dispatch(receiveLogin());
             })
             .catch(err => {
+                console.log('err resp:', err.response);
                 dispatch(loginError(err));
             });
     }
