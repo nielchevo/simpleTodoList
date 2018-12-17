@@ -14,10 +14,11 @@ class TodoCard extends React.Component {
       this.handleOnSubmit = this.handleOnSubmit.bind(this);
    }
    
-   componentWillReceiveProps(nextProps) {
-      // https://stackoverflow.com/questions/32414308/updating-state-on-props-change-in-react-form
-      this.setState({todos: nextProps.listCard});
-   }
+   //componentWillReceiveProps(nextProps) {
+   //   // https://stackoverflow.com/questions/32414308/updating-state-on-props-change-in-react-form
+   //   console.log('TODO CARD WILL REC, props:', nextProps);
+   //   this.setState({todos: nextProps.listCard});
+   //}
 
    handleOnTextChange(e) {
       e.preventDefault();
@@ -28,10 +29,12 @@ class TodoCard extends React.Component {
       e.preventDefault();
    }
 
-   onRenderListItem() {  
-      if (this.props.listCard.length) {            
+   onRenderListItem() {         
+       const listCard = this.props.listCard;
+       console.log("todo card on render list item, length:", listCard.length);
+       if (listCard.length) {            
             //let renderList = this.state.todos.map(item => {
-            let renderList = this.props.listCard.map(item => {
+            let renderList = listCard.map(item => {
             return (
                   <div className="card border-primary mb-3" key={item._id}>
                   <div className="card-header">
