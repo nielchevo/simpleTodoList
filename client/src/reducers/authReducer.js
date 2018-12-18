@@ -12,7 +12,8 @@ export default function auth(state = initialAuthState, action) {
             return Object.assign({}, state, {
                 isLoggingIn: true,
                 isAuthenticated: false,
-                user: action.credential
+                user: action.credential,
+                errorMessage: ''
             })
         case 'LOGIN_SUCCESS':
             return Object.assign({}, state, {
@@ -27,15 +28,13 @@ export default function auth(state = initialAuthState, action) {
                 errorMessage: action.message
             })
         case 'LOGOUT_REQUEST':
-            console.log('auth reducer logout request');
             return Object.assign({}, state, {
                 isLoggingIn: true,
                 isAuthenticated: true
             })
         case 'LOGOUT_SUCCESS':
-            console.log('auth reducer logout success');
             return Object.assign({}, state, {
-                isLoggingIn: true,
+                isLoggingIn: false,
                 isAuthenticated: false
             })
         default:

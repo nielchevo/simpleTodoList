@@ -25,8 +25,8 @@ export default function todoReducer(state = initialState, action) {
                 //...state, i wonder if this necessary
                 todos: action.payload.todos
             }
-        default: 
-            console.log('default reducer');
+        default:
+            console.log('todo reducer default, action type:', action.type);
             return state;
     }
 }

@@ -2,10 +2,11 @@
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Input from '../components/Input';
-import Button from '../components/Button';
-import Auth from '../modules/Auth';
 import * as AuthActions from '../actions/AuthActions';
+
+const widthStyle = {
+    width: '100%'
+}
 
 class Login extends Component {
     constructor(props) {
@@ -16,12 +17,32 @@ class Login extends Component {
     }
 
     handleClearForm() {
+        this.refs.password.value = "";
+    }
 
+    handleErrorMessage() {
+        const { errorMessage } = this.props;
+        if (errorMessage !== "") {
+            return (
+                <div className="alert alert-dismissible alert-primary">
+                    <button type="button" className="close" data-dismiss="alert">&times;</button>
+                    {errorMessage}
+                </div>)
+        }
     }
 
     render() {
-        const { isAuthenticated } = this.props;
+        const { isLoggingIn, isAuthenticated, errorMessage } = this.props;
+
         if (isAuthenticated) return <Redirect to='/' />
+
+        const loadingIndicator = (isLoggingIn) ? (
+            <div className="progress">
+                <div className="progress-bar progress-bar-striped bg-info" role="progressbar" style={widthStyle} aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        ) :
+            (null);
+
         return (
             <div>
                 <input type='text' ref='username' name='username' className="form-control" placeholder='username' />
@@ -29,17 +50,22 @@ class Login extends Component {
                 <button onClick={(event) => this.handleClick(event)} className="btn btn-primary">
                     LoginTes
                 </button>
+                {loadingIndicator}
+                {this.handleErrorMessage()}
             </div>
         )
     }
 
     handleClick(event) {
+        event.preventDefault();
+
         const username = this.refs.username.value.trim();
         const password = this.refs.password.value.trim();
         //const creds = { username: username.value.trim(), password: password.value.trim() };   
         if (username && password) {
             this.props.actions.loginUser({ username, password });
-        } 
+        }
+        this.handleClearForm();
     }
 }
 
