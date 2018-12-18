@@ -16,7 +16,10 @@ router.get('/todos', VerifyToken, todosController.get_todos_lists);
 router.post('/todo/create', VerifyToken, todosController.post_todo_create);
 
 // POST todo delete
-router.delete('/todo/:id/delete', VerifyToken, todosController.post_todo_delete);
+router.post('/todo/:id/delete', VerifyToken, todosController.post_todo_delete);
+
+// POST todo delete single list item
+router.post('/todo/:id/lists/:itemid/delete', VerifyToken, todosController.post_todo_delete_item);
 
 // POST update todo
 router.post('/todo/:id/update', VerifyToken, todosController.post_todo_modify);

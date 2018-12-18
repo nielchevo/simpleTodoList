@@ -126,6 +126,28 @@ exports.post_todo_modify = [
     }
 ];
 
+exports.post_todo_delete_item = function(req, res, next) {
+    // let Object for ease to read
+    let query = {_id: req.params.id, userId: req.decodedUserId} 
+
+    // '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
+    let update = { 
+                    $pull: [{ 'list': {'_id': req.params.itemid} }]
+                 }
+
+    // Upsert reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
+    let option = {upsert: false} 
+    
+    todosModel.findOneAndUpdate( query, update, option,
+        function(err, result) {
+            // callback
+            if(err) { return res.status(500).send(error); }
+            
+            return res.status(200).send(result);
+        }
+    )
+}
+
 // route for set a todo public or no
 // only require isPublic:true/false in request body
 // ref: https://stackoverflow.com/questions/37267042/mongoose-findoneandupdate-updating-multiple-fields
@@ -161,9 +183,3 @@ exports.get_todos_detail = function (req, res, next) {
         res.status(200).send(results);
     });
 }
-
-exports.test_get_auth = function (req, res, next) {
-    console.log(req.decodedUserId);
-    res.sendStatus(200);
-}
-
