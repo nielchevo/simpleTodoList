@@ -60,10 +60,6 @@ exports.post_todo_create = [
 
                 res.status(201).send(success);
             });
-
-            // console.log(createTodo);
-            // console.log('debug todo create'); //debug only
-            // return res.sendStatus(200);
         }
     }
 ];
@@ -93,16 +89,14 @@ exports.post_todo_delete = function (req, res, next) {
 // reference: https://medium.com/@yugagrawal95/mongoose-mongodb-functions-for-crud-application-1f54d74f1b34
 exports.post_todo_modify = [
 
-    body('title').trim(),
     body('list').trim(),
 
     sanitizeBody('*').trim().escape(),
-    sanitizeBody('title').trim().escape(),
     sanitizeBody('list').trim().escape(),
 
     (req, res, next) => {
         const errors = validationResult(req);
-
+        console.log('post edit modify')
         if (!errors.isEmpty()) {
             // Validation Error
             console.error('Validation Input Error !!', errors.array());
@@ -114,9 +108,7 @@ exports.post_todo_modify = [
                 todosModel.findByIdAndUpdate(id,
                     {
                         "$set": {
-                            title: req.body.title,
-                            list: req.body.list,
-                            isPublic: req.body.isPublic
+                            list: req.body.list
                         }
                     }).then(function (todo) {
                         if (todo) {

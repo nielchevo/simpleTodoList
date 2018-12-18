@@ -20,13 +20,11 @@ export default function todoReducer(state = initialState, action) {
             console.log('EDIT');
             return state;
         case Types.FETCH_TODO:
-            console.log('FETCH todo, data:', action.payload.todos);
             return {
                 //...state, i wonder if this necessary
                 todos: action.payload.todos
             }
-        default:
-            console.log('todo reducer default, action type:', action.type);
+        default: 
             return state;
     }
 }
