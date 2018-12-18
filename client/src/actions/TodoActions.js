@@ -57,7 +57,7 @@ export const fetchTodoAction = (todos) => ({
     }
 })
 
-export const fetchTodo = (username) => {
+export const fetchTodo = () => {
     return (dispatch) => {
         return Axios.get('http://localhost:5000/todos', authHeader())
             .then(response => {

@@ -42,9 +42,9 @@ export function loginUser(credential) {
             .then(response => {
                 dispatch(receiveLogin());
             })
-            .catch(err => {
-                console.log('err resp:', err.response);
-                dispatch(loginError(err));
+            .catch(err => {                
+                const message = (err.response.status) ? "Login failed" : "Something's wrong";
+                dispatch(loginError(message));
             });
     }
 }
