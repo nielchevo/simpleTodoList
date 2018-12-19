@@ -127,15 +127,16 @@ exports.post_todo_modify = [
 ];
 
 exports.post_todo_delete_item = function(req, res, next) {
+
     // let Object for ease to read
     let query = {_id: req.params.id, userId: req.decodedUserId} 
 
-    // '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
+    // Array Update operator '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
     let update = { 
-                    $pull: [{ 'list': {'_id': req.params.itemid} }]
+                    $pull:{ "list":{ "_id": req.body.itemID } }
                  }
 
-    // Upsert reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
+    // MongoDB's 'upsert' reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
     let option = {upsert: false} 
     
     todosModel.findOneAndUpdate( query, update, option,
