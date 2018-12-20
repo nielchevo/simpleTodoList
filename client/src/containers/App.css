@@ -32,6 +32,11 @@
   }
 }
 
+html, body, #app {
+    height: 100vh !important;
+    background-color: yellow;
+}
+
 /* Todo Card */
 .card {
   background-color: #eee;
@@ -48,5 +53,9 @@
 .btn-wrapper {
   float: right;
 }
-  
-  
+
+.login-page {
+    margin-top: 5px;
+    height: 100vh !important;
+    background-color: darkgreen;
+}

@@ -44,14 +44,21 @@ class Login extends Component {
             (null);
 
         return (
-            <div className="container">
-                <input type='text' ref='username' name='username' className="form-control" placeholder='username' />
-                <input type='password' ref='password' name='password' className="form-control" placeholder='password' />
-                <button onClick={(event) => this.handleClick(event)} className="btn btn-primary">
-                    login
-                </button>
-                {loadingIndicator}
-                {this.handleErrorMessage()}
+            <div className="container login-page">
+                <div className="row justify-content-center align-items-center">
+                    <div className="card border-secondary col-6">
+                        <div className="card-header"></div>
+                        <div className="card-body">
+                            <input type='text' ref='username' name='username' className="form-control" placeholder='username' />
+                            <input type='password' ref='password' name='password' className="form-control" placeholder='password' />
+                            <button onClick={(event) => this.handleClick(event)} className="btn btn-secondary">
+                                login
+                            </button>
+                            {loadingIndicator}
+                            {this.handleErrorMessage()}
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
