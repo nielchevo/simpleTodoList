@@ -144,7 +144,14 @@ exports.post_todo_delete_item = function(req, res, next) {
             // callback
             if(err) { return res.status(500).send(error); }
             
-            return res.status(200).send(result);
+            
+            if(result != null) {
+                // object db exist, response with deleted itemID. 
+                return res.status(200).send({data: result, message: "Success delete item" });
+            }
+            
+            // Any Error return 504 service unavailable. 
+            return res.status(504).send({error: "Data not found"})
         }
     )
 }

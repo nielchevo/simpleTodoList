@@ -14,7 +14,7 @@ export default function todoReducer(state = initialState, action) {
                 todos
             }
         case Types.DELETE_TODO:
-            console.log('DELETE');
+            console.log('DELETE action status, data: ',action.status, action.data);
             return state;
         case Types.EDIT_TODO :
             console.log('EDIT');

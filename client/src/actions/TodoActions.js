@@ -2,13 +2,9 @@ import Axios from 'axios';
 import * as Types from '../constants/ActionTypes';
 import { authHeader } from '../modules/authHelper';
 
-// dummy Auth Token , if this fail set token lifespan to '1w' in back-end configs.js
-const tokenUser = ''; 
-
-//const header_config = {
-//     headers: { Authorization: 'Token ' + tokenUser }
-//}
-
+/*
+    function Add Todo Card
+ */
 export const addTodoAction = (newtodo) => ({
     type: Types.ADD_TODO,
     newtodo: newtodo
@@ -26,21 +22,24 @@ export const addTodo = (listItem) => {
    };
 };
 
-export const deleteTodoAction = (cardID, itemID) => ({
-    type: Types.DELETE_TODO, 
-    id: cardID,
-    itemId : itemID
+/* 
+    function Delete item List 
+*/
+export const deleteItemListAction = ({Status, Data}) => ({
+    type   : Types.DELETE_TODO, 
+    status : Status,
+    data   : Data
 })
 
-export const deleteTodo = ( {cardID, itemID } ) => {
+export const deleteItemList = (cardID, itemID) => {
     return (dispatch) => {
-        return Axios.post('http://localhost:5000/todo/'+ cardID +'/lists/delete', itemID, authHeader())
-         .then(response => {
-             dispatch(deleteTodo(response.data));
-         })
-         .catch( error => {
-             throw (error);
-         });
+        return Axios.post('http://localhost:5000/todo/'+ cardID +'/lists/delete', {itemID: itemID}, authHeader())
+                .then(response => {
+                    dispatch(deleteItemListAction( {Status: response.status, Data: response.data} ));
+                })
+                .catch( error => {
+                    throw (error);
+                });
     };
 };
 

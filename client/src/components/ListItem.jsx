@@ -11,10 +11,10 @@ const ListItem = ({cardID, itemList, deleteItemList, itemIsCompleted}) => {
                 >
                     {item.content}
                     <div className="btn-wrapper">
-                        <button className="btn btn-primary" onClick={() => deleteItemList(item._id, cardID)}>
+                        <button className="btn btn-primary" onClick={() => deleteItemList(cardID, item._id)}>
                             Delete !
                     </button>
-                        <button className="btn btn-secondary" onClick={() => itemIsCompleted(item._id, cardID)}>
+                        <button className="btn btn-secondary" onClick={() => itemIsCompleted(cardID, item._id)}>
                             Complete
                     </button>
                     </div>

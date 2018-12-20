@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteTodo } from '../actions/TodoActions';
+import { deleteItemList } from '../actions/TodoActions';
 import ListItem from '../components/ListItem';
 
 class TodoCard extends React.Component {
@@ -24,19 +24,11 @@ class TodoCard extends React.Component {
       e.preventDefault();
    }
 
-   handleDeleteItem(itemID, cardID) {
-      // Find the card which we wanted to delete item list 
-      const cardEdit = this.props.todos.find( items => {
-         return items._id === cardID
-      })
-
-      // Delete the list item we clicked using item _id (generated from mongodb)
-      let listItem = cardEdit.list.filter( items => {
-         return items._id !== itemID
-      })
-
+   handleDeleteItem(cardID, itemID) {
       // Dispatch to redux with card object ID and list item. 
-      this.props.onDeleteTodo({cardID, ...listItem});
+      console.log('handleDeletItem: ', cardID, itemID);
+
+      this.props.onDeleteItemList(cardID, itemID);
    }
 
    handleItemIsDone(itemID, cardID) {
@@ -96,7 +88,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
    return {
-      onDeleteTodo: (listItem) => { dispatch(deleteTodo(listItem)); }
+      /** request Delete Todo list item  */
+      onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); }
    }
 }
 

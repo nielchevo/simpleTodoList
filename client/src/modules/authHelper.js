@@ -6,7 +6,12 @@ export function authHeader() {
     let token = localStorage.getItem('syot_token');
 
     if (token) {
-        return { headers: { Authorization: 'Token ' + token } };
+        return { 
+                 headers: { 
+                            Authorization: 'Token ' + token, 
+                            'Content-Type': 'application/json'
+                          }
+               };
     } else {
         return {};
     }
