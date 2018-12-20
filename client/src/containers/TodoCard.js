@@ -45,7 +45,7 @@ class TodoCard extends React.Component {
    }
 
    onRenderListItem() {         
-       if (this.props.todos.length) {            
+       if (this.props.todos.length) {
            
             let renderList = this.props.todos.map(item => {
                return (
