@@ -32,7 +32,7 @@ class Login extends Component {
     }
 
     render() {
-        const { isLoggingIn, isAuthenticated, errorMessage } = this.props;
+        const { isLoggingIn, isAuthenticated } = this.props;
 
         if (isAuthenticated) return <Redirect to='/' />
 
@@ -44,11 +44,11 @@ class Login extends Component {
             (null);
 
         return (
-            <div>
+            <div className="container">
                 <input type='text' ref='username' name='username' className="form-control" placeholder='username' />
                 <input type='password' ref='password' name='password' className="form-control" placeholder='password' />
                 <button onClick={(event) => this.handleClick(event)} className="btn btn-primary">
-                    LoginTes
+                    login
                 </button>
                 {loadingIndicator}
                 {this.handleErrorMessage()}

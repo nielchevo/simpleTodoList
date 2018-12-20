@@ -11,3 +11,9 @@ export function authHeader() {
         return {};
     }
 }
+
+export function setToken(token) {
+    if (token && token !== "") {
+        localStorage.setItem('syot_token', token);
+    }
+}

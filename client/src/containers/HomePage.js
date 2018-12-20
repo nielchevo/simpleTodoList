@@ -2,14 +2,12 @@
 import { connect } from 'react-redux';
 import './App.css';
 import TodoPage from './TodoPage';
-import Login from './Login';
 import NavBar from '../components/NavBar';
-import { SecuredRoute } from '../components/SecuredRoute';
 import { logoutUser } from '../actions/AuthActions';
 
 class HomePage extends Component {
     render() {
-        const { dispatch, isAuthenticated, errorMessage } = this.props;
+        const { dispatch, isAuthenticated } = this.props;
         return (
             <div className="wrapper">
                 <NavBar

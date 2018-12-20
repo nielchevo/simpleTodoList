@@ -1,8 +1,4 @@
-﻿//import axios from 'axios';
-import { userService } from '../services/userService';
-
-// LOGIN ACTIONS
-const api_login = 'http://localhost:5000/user/login'
+﻿import { userService } from '../services/userService';
 
 const requestLogin = (credential) => ({
     type: 'LOGIN_REQUEST',
@@ -42,8 +38,8 @@ export function loginUser(credential) {
             .then(response => {
                 dispatch(receiveLogin());
             })
-            .catch(err => {                
-                const message = (err.response.status) ? "Login failed" : "Something's wrong";
+            .catch(err => {
+                const message = (err.response !== undefined) ? "Login failed" : "Something's wrong";
                 dispatch(loginError(message));
             });
     }

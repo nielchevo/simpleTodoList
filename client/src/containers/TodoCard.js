@@ -27,7 +27,7 @@ class TodoCard extends React.Component {
    handleDeleteItem(itemID, cardID) {
       // Find the card which we wanted to delete item list 
       const cardEdit = this.props.todos.find( items => {
-         return items._id == cardID
+         return items._id === cardID
       })
 
       // Delete the list item we clicked using item _id (generated from mongodb)
