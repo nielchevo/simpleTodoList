@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { deleteItemList } from '../actions/TodoActions';
+import { deleteCard } from '../actions/TodoActions';
 import ListItem from '../components/ListItem';
 
 class TodoCard extends React.Component {
@@ -13,6 +14,7 @@ class TodoCard extends React.Component {
       }
       console.log('todocard', this.props);
       this.handleDeleteItem = this.handleDeleteItem.bind(this);
+      this.handleDeleteCard = this.handleDeleteCard.bind(this);
    }
 
    handleOnTextChange(e) {
@@ -31,6 +33,12 @@ class TodoCard extends React.Component {
       this.props.onDeleteItemList(cardID, itemID);
    }
 
+   handleDeleteCard(cardID) {
+      console.log('handleDeleteItem: ', cardID);
+
+      this.props.onDeleteCard(cardID);
+   }
+
    handleItemIsDone(itemID, cardID) {
       console.log('handleItemIsDone itemID: ', itemID)
       
@@ -44,7 +52,9 @@ class TodoCard extends React.Component {
                      <div className="card border-primary mb-3" key={item._id}>
                         <div className="card-header">
                               <h4 className="card-title">{item.title}</h4>
-                              <button className="btn btn-primary"> Delete Card </button>
+                              <button className="btn btn-primary" onClick={ () => this.handleDeleteCard(item._id) }> 
+                                 Delete Card 
+                              </button>
                         </div>
                      
                         <ListItem
@@ -89,7 +99,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
    return {
       /** request Delete Todo list item  */
-      onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); }
+      onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); },
+      onDeleteCard: (cardID) => { dispatch(deleteCard(cardID)); }
    }
 }
 
