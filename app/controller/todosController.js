@@ -73,7 +73,7 @@ exports.post_todo_delete = function (req, res, next) {
                     return res.sendStatus(404).send(err);
                 }
     
-                if(results == null){
+                if(results === null){
                     return res.status(500).send('No such ID exist !');
                 }
     
