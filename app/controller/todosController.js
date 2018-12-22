@@ -96,7 +96,7 @@ exports.post_todo_modify = [
 
     (req, res, next) => {
         const errors = validationResult(req);
-        console.log('post edit modify')
+        console.log('post edit modify');
         if (!errors.isEmpty()) {
             // Validation Error
             console.error('Validation Input Error !!', errors.array());
@@ -155,6 +155,37 @@ exports.post_todo_delete_item = function(req, res, next) {
         }
     )
 }
+
+exports.post_todo_done_item = function (req, res, next) {
+
+    // let Object for ease to read
+    let query = { _id: req.params.id, userId: req.decodedUserId }
+    let isDone = req.body.isDone;
+
+    // Array Update operator '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
+    let update = {
+        $pull: { "list": { "_id": req.body.itemID } }
+    };
+
+    // MongoDB's 'upsert' reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
+    let option = { upsert: false };
+
+    todosModel.findOneAndUpdate(query, update, option,
+        function (err, result) {
+            // callback
+            if (err) { return res.status(500).send(error); }
+
+
+            if (result !== null) {
+                // object db exist, response with deleted itemID.
+                return res.sendStatus(200);
+            }
+
+            // Any Error return 504 service unavailable.
+            return res.status(504).send({ error: "Data not found" });
+        }
+    );
+};
 
 // route for set a todo public or no
 // only require isPublic:true/false in request body
