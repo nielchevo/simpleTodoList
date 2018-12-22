@@ -25,10 +25,10 @@ export const addTodo = (listItem) => {
 /* 
     function Delete item List 
 */
-export const deleteItemListAction = ({Status, Data}) => ({
+export const deleteItemListAction = ({ cardId, listId, Data}) => ({
     type   : Types.DELETE_TODO, 
-    status : Status,
-    data   : Data
+    cardId: cardId,
+    listId: listId
 })
 
 export const deleteItemList = (cardID, itemID) => {
@@ -38,7 +38,8 @@ export const deleteItemList = (cardID, itemID) => {
                     if (response && response.status === 200) {
                         console.log('cardID:', cardID);
                         console.log('itemID:', itemID);
-                        dispatch(deleteItemListAction( {Status: response.status, Data: response.data} ));
+                        console.log('resp:', response.data);
+                        dispatch(deleteItemListAction({ cardId: cardID, listId: itemID} ));
                     }
                 })
                 .catch( error => {

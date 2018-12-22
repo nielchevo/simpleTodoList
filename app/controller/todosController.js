@@ -145,7 +145,7 @@ exports.post_todo_delete_item = function(req, res, next) {
             if(err) { return res.status(500).send(error); }
             
             
-            if(result != null) {
+            if(result !== null) {
                 // object db exist, response with deleted itemID. 
                 return res.status(200).send({data: result, message: "Success delete item" });
             }
