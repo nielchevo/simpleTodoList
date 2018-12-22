@@ -43,17 +43,18 @@ export const deleteItemList = (cardID, itemID) => {
     };
 };
 
-export const deleteCardAction = ({Status, Data}) => ({
+export const deleteCardAction = (cardID) => ({
     type    : Types.DELETE_CARD,
-    status  : Status,
-    data    : Data
+    id: cardID
 })
 
 export const deleteCard = (cardID) => {
     return (dispatch) => {
         return Axios.post('http://localhost:5000/todo/'+ cardID +'/delete', { }, authHeader())
-                .then(response => {
-                    dispatch(deleteCardAction( {Status: response.status, Data: response.data} ));
+                .then(response => {                    
+                    if (response && response.status === 200) {
+                        dispatch(deleteCardAction(cardID));
+                    }                    
                 })
                 .catch( error => {
                     throw (error);

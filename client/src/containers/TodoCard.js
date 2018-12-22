@@ -34,7 +34,7 @@ class TodoCard extends React.Component {
    }
 
    handleDeleteCard(cardID) {
-      console.log('handleDeleteItem: ', cardID);
+      console.log('handleDeleteCard: ', cardID);
 
       this.props.onDeleteCard(cardID);
    }
