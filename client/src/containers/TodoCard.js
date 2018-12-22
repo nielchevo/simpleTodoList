@@ -1,21 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItemList } from '../actions/TodoActions';
-import { deleteCard } from '../actions/TodoActions';
+import { deleteItemList, deleteCard, toggleItemDone } from '../actions/TodoActions';
 import ListItem from '../components/ListItem';
 
 class TodoCard extends React.Component {
-   constructor(props){
-      super(props);
-      
-      // This local state for handle text input for new item list
-      this.state = {
-         inputItemList: ''
-      }
-      console.log('todocard', this.props);
-      this.handleDeleteItem = this.handleDeleteItem.bind(this);
-      this.handleDeleteCard = this.handleDeleteCard.bind(this);
-   }
+    constructor(props) {
+        super(props);
+
+        // This local state for handle text input for new item list
+        this.state = {
+            inputItemList: ''
+        }
+        console.log('todocard', this.props);
+
+        // not needed anymore
+        this.handleDeleteItem = this.handleDeleteItem.bind(this);
+        this.handleDeleteCard = this.handleDeleteCard.bind(this);
+        this.handleItemIsDone = this.handleItemIsDone.bind(this);
+    }
 
    handleOnTextChange(e) {
       e.preventDefault();
@@ -28,21 +30,22 @@ class TodoCard extends React.Component {
 
    handleDeleteItem(cardID, itemID) {
       // Dispatch to redux with card object ID and list item. 
-      console.log('handleDeletItem: ', cardID, itemID);
+      //console.log('handleDeletItem: ', cardID, itemID);
 
       this.props.onDeleteItemList(cardID, itemID);
    }
 
    handleDeleteCard(cardID) {
-      console.log('handleDeleteCard: ', cardID);
+      //console.log('handleDeleteCard: ', cardID);
 
       this.props.onDeleteCard(cardID);
    }
 
-   handleItemIsDone(itemID, cardID) {
-      console.log('handleItemIsDone itemID: ', itemID)
-      
-   }
+    handleItemIsDone(cardID, itemID) {
+        console.log('handleItemIsDone itemID: ', itemID);
+
+        this.props.onToggleItemDone(cardID, itemID);
+    }
 
    onRenderListItem() {         
        if (this.props.todos.length) {
@@ -97,11 +100,12 @@ const mapStateToProps = (state) => {
 } 
 
 const mapDispatchToProps = dispatch => {
-   return {
-      /** request Delete Todo list item  */
-      onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); },
-      onDeleteCard: (cardID) => { dispatch(deleteCard(cardID)); }
-   }
+    return {
+        /** request Delete Todo list item  */
+        onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); },
+        onDeleteCard: (cardID) => { dispatch(deleteCard(cardID)); },
+        onToggleItemDone: (cardId, itemId) => { dispatch(toggleItemDone(cardId, itemId)); }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoCard)

@@ -36,9 +36,6 @@ export const deleteItemList = (cardID, itemID) => {
         return Axios.post('http://localhost:5000/todo/'+ cardID +'/lists/delete', {itemID: itemID}, authHeader())
                 .then(response => {
                     if (response && response.status === 200) {
-                        console.log('cardID:', cardID);
-                        console.log('itemID:', itemID);
-                        console.log('resp:', response.data);
                         dispatch(deleteItemListAction({ cardId: cardID, listId: itemID} ));
                     }
                 })
@@ -90,5 +87,26 @@ export const fetchTodo = () => {
             .catch( error => {
                 throw (error);
             });
+    };
+};
+
+export const toggleItemAction = (cardId, itemId) => ({
+    type: Types.TOGGLE_ITEM,
+    cardId: cardId,
+    itemId: itemId
+})
+
+export const toggleItemDone = (cardId, itemId) => {
+    return (dispatch) => {
+        //return Axios.post('http://localhost:5000/todo/' + cardID + '/delete', {}, authHeader())
+            //.then(response => {
+                //if (response && response.status === 200) {
+                    console.log('action itemid:', itemId);
+                    dispatch(toggleItemAction(cardId, itemId));
+                //}
+            //})
+            //.catch(error => {
+            //    throw (error);
+            //});
     };
 };

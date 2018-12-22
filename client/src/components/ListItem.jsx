@@ -9,14 +9,15 @@ const ListItem = ({cardID, itemList, deleteItemList, itemIsCompleted}) => {
                     className="list-group-item list-group-item-action"
                     key={item._id}
                 >
-                    {item.content}
+                    {(item.isDone) ? <strike>item.content</strike> : item.content}
+
                     <div className="btn-wrapper">
                         <button className="btn btn-primary" onClick={() => deleteItemList(cardID, item._id)}>
                             Delete !
-                    </button>
+                        </button>
                         <button className="btn btn-secondary" onClick={() => itemIsCompleted(cardID, item._id)}>
-                            Complete
-                    </button>
+                            {(item.isDone) ? 'Undone' : 'Complete'}
+                        </button>
                     </div>
                 </li>
             )

@@ -17,7 +17,7 @@ export default function todoReducer(state = initialState, action) {
             }
         case Types.DELETE_TODO:
             {
-                let todos = [...state.todos]
+                let todos = [...state.todos];
                 todos.forEach(todo => {
                     if ((todo._id === action.cardId) && (todo.list && todo.list.length)) {
                         let newlist = todo.list.filter(item => {
@@ -47,6 +47,22 @@ export default function todoReducer(state = initialState, action) {
             return {
                 //...state, i wonder if this necessary
                 todos: action.payload.todos
+            }
+        case Types.TOGGLE_ITEM:
+            {
+                let todos = [...state.todos];
+                todos.forEach(todo => {
+                    if ((todo._id === action.cardId) && (todo.list && todo.list.length)) {
+                        todo.list.forEach(item => {
+                            if (item._id === action.itemId) {
+                                item.isDone = !item.isDone;
+                            }
+                        });
+                    }
+                });
+                return {
+                    todos
+                }
             }
         default:
             return state;
