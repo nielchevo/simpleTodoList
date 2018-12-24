@@ -90,23 +90,28 @@ export const fetchTodo = () => {
     };
 };
 
-export const toggleItemAction = (cardId, itemId) => ({
+export const toggleItemAction = (cardId, itemId, toggledvalue) => ({
     type: Types.TOGGLE_ITEM,
     cardId: cardId,
-    itemId: itemId
+    itemId: itemId,
+    toggledvalue: toggledvalue
 })
 
-export const toggleItemDone = (cardId, itemId) => {
+export const toggleItemDone = (cardId, itemId, toggledvalue) => {
     return (dispatch) => {
-        //return Axios.post('http://localhost:5000/todo/' + cardID + '/delete', {}, authHeader())
-            //.then(response => {
-                //if (response && response.status === 200) {
-                    console.log('action itemid:', itemId);
-                    dispatch(toggleItemAction(cardId, itemId));
-                //}
-            //})
-            //.catch(error => {
-            //    throw (error);
-            //});
+        const body = {
+            'idlist': itemId,
+            'isDone': toggledvalue
+        };
+
+        return Axios.post('http://localhost:5000/todo/' + cardId + '/lists/done', body, authHeader())
+            .then(response => {
+                if (response && response.status === 200) {
+                    dispatch(toggleItemAction(cardId, itemId, toggledvalue));
+                }
+            })
+            .catch(error => {
+                throw (error);
+            });
     };
 };

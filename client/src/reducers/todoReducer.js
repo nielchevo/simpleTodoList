@@ -55,7 +55,7 @@ export default function todoReducer(state = initialState, action) {
                     if ((todo._id === action.cardId) && (todo.list && todo.list.length)) {
                         todo.list.forEach(item => {
                             if (item._id === action.itemId) {
-                                item.isDone = !item.isDone;
+                                item.isDone = action.toggledvalue;
                             }
                         });
                     }

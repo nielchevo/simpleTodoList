@@ -41,10 +41,10 @@ class TodoCard extends React.Component {
       this.props.onDeleteCard(cardID);
    }
 
-    handleItemIsDone(cardID, itemID) {
-        console.log('handleItemIsDone itemID: ', itemID);
+    handleItemIsDone(cardID, itemID, toggledvalue) {
+        //console.log('handleItemIsDone itemID: ', itemID);     
 
-        this.props.onToggleItemDone(cardID, itemID);
+        this.props.onToggleItemDone(cardID, itemID, toggledvalue);
     }
 
    onRenderListItem() {         
@@ -104,7 +104,7 @@ const mapDispatchToProps = dispatch => {
         /** request Delete Todo list item  */
         onDeleteItemList: (cardID, itemID) => { dispatch(deleteItemList(cardID, itemID)); },
         onDeleteCard: (cardID) => { dispatch(deleteCard(cardID)); },
-        onToggleItemDone: (cardId, itemId) => { dispatch(toggleItemDone(cardId, itemId)); }
+        onToggleItemDone: (cardId, itemId, toggledvalue) => { dispatch(toggleItemDone(cardId, itemId, toggledvalue)); }
     }
 }
 

@@ -24,7 +24,7 @@ exports.get_todos_lists = function (req, res, next) {
         // Success.HTTP 200 & todo results
         return res.status(200).send(results.Todos);
     });
-}
+};
 
 // --------------  API Create ToDo --------------  
 exports.post_todo_create = [
@@ -42,7 +42,7 @@ exports.post_todo_create = [
         let createTodo = new todosModel({
             title: req.body.title,
             list: req.body.list,
-            userId: req.decodedUserId,
+            userId: req.decodedUserId
         });
 
         if (!errors.isEmpty()) {
@@ -65,25 +65,25 @@ exports.post_todo_create = [
 ];
 
 exports.post_todo_delete = function (req, res, next) {
-    try{
-        todosModel.findOneAndDelete({ _id: req.params.id, userId: req.decodedUserId }, 
+    try {
+        todosModel.findOneAndDelete({ _id: req.params.id, userId: req.decodedUserId },
             { /* Options */ },
-            function(err, results) {
-                if(err) { 
+            function (err, results) {
+                if (err) {
                     return res.sendStatus(404).send(err);
                 }
-    
-                if(results === null){
+
+                if (results === null) {
                     return res.status(500).send('No such ID exist !');
                 }
-    
-                res.status(200).send("Todo with title ("+ results.title +") and _ID ("+ results._id +") successfully deleted !");
-        });
+
+                res.status(200).send("Todo with title (" + results.title + ") and _ID (" + results._id + ") successfully deleted !");
+            });
     }
-    catch(error) {
+    catch (error) {
         console.log(error);
     }
-}
+};
 
 // --------------  API Update ToDo --------------  
 // reference: https://medium.com/@yugagrawal95/mongoose-mongodb-functions-for-crud-application-1f54d74f1b34
@@ -138,7 +138,7 @@ exports.testupdate = function (req, res, next) {
     console.log('isDone:', isDone);
 
     let criteria = {
-        '_id' : idcard,
+        '_id': idcard,
         'list._id': idlist
     };
 
@@ -150,7 +150,7 @@ exports.testupdate = function (req, res, next) {
 
     let option = { upsert: false };
 
-    todosModel.findOneAndUpdate(criteria, update, option, 
+    todosModel.findOneAndUpdate(criteria, update, option,
         function (err, result) {
             if (err) {
                 console.log('test errorrrrr');
@@ -161,43 +161,12 @@ exports.testupdate = function (req, res, next) {
             }
         }
     );
-}
+};
 
-exports.post_todo_delete_item = function(req, res, next) {
-
-    // let Object for ease to read
-    let query = {_id: req.params.id, userId: req.decodedUserId} 
-
-    // Array Update operator '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
-    let update = { 
-                    $pull:{ "list":{ "_id": req.body.itemID } }
-                 }
-
-    // MongoDB's 'upsert' reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
-    let option = {upsert: false}
-    
-    todosModel.findOneAndUpdate( query, update, option,
-        function(err, result) {
-            // callback
-            if(err) { return res.status(500).send(error); }
-            
-            
-            if(result !== null) {
-                // object db exist, response with deleted itemID. 
-                return res.status(200).send({data: result, message: "Success delete item" });
-            }
-            
-            // Any Error return 504 service unavailable. 
-            return res.status(504).send({error: "Data not found"})
-        }
-    )
-}
-
-exports.post_todo_done_item = function (req, res, next) {
+exports.post_todo_delete_item = function (req, res, next) {
 
     // let Object for ease to read
-    let query = { _id: req.params.id, userId: req.decodedUserId }
-    let isDone = req.body.isDone;
+    let query = { _id: req.params.id, userId: req.decodedUserId };
 
     // Array Update operator '$pull' reference https://docs.mongodb.com/manual/reference/operator/update/pull/index.html
     let update = {
@@ -214,12 +183,45 @@ exports.post_todo_done_item = function (req, res, next) {
 
 
             if (result !== null) {
-                // object db exist, response with deleted itemID.
+                // object db exist, response with deleted itemID. 
+                return res.status(200).send({ data: result, message: "Success delete item" });
+            }
+
+            // Any Error return 504 service unavailable. 
+            return res.status(504).send({ error: "Data not found" });
+        }
+    );
+};
+
+// require id of the list id (idlist:xxxx) in request body
+// require value to be changed (isPublic:true/false) in request body
+exports.post_todo_done_item = function (req, res, next) {
+    let idcard = req.params.id;
+    let idlist = req.body.idlist;
+    let isDone = req.body.isDone;
+
+    let criteria = {
+        '_id': idcard,
+        'list._id': idlist
+    };
+
+    let update = {
+        "$set": {
+            'list.$.isDone': isDone
+        }
+    };
+
+    todosModel.findOneAndUpdate(criteria, update, { upsert: false },
+        function (err, result) {
+            // callback
+            if (err) { return res.status(500).send(error); }
+
+            if (result) {
                 return res.sendStatus(200);
             }
 
             // Any Error return 504 service unavailable.
-            return res.status(504).send({ error: "Data not found" });
+            return res.status(504).send({ error: "Something's wrong" });
         }
     );
 };
@@ -246,16 +248,16 @@ exports.post_todo_setpublic = function (req, res, next) {
         });
 
     //res.sendStatus(200);
-}
+};
 
 // --------------  API GET Single Detail ToDo --------------  
 exports.get_todos_detail = function (req, res, next) {
     let todoId = req.params.id;
 
-    todosModel.findOne({ _id: todoId, userId: req.decodedUserId}, function(err, results) {
+    todosModel.findOne({ _id: todoId, userId: req.decodedUserId }, function (err, results) {
         // TODO: Need proper error handling
-        if(err) { return next(err); }
-        
+        if (err) { return next(err); }
+
         res.status(200).send(results);
     });
-}
+};

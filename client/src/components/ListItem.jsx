@@ -15,7 +15,10 @@ const ListItem = ({cardID, itemList, deleteItemList, itemIsCompleted}) => {
                         <button className="btn btn-primary" onClick={() => deleteItemList(cardID, item._id)}>
                             Delete !
                         </button>
-                        <button className="btn btn-secondary" onClick={() => itemIsCompleted(cardID, item._id)}>
+                        <button className="btn btn-secondary" onClick={() => {
+                            let invertedvalue = !item.isDone;
+                            itemIsCompleted(cardID, item._id, invertedvalue)
+                        }}>
                             {(item.isDone) ? 'Undone' : 'Complete'}
                         </button>
                     </div>
