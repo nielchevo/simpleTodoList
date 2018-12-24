@@ -126,6 +126,43 @@ exports.post_todo_modify = [
     }
 ];
 
+// reference for update sub array in mongo
+// https://stackoverflow.com/questions/12612581/update-an-element-in-sub-of-sub-array-in-mongodb
+exports.testupdate = function (req, res, next) {
+    let idcard = req.body.idcard;
+    let idlist = req.body.idlist;
+    let isDone = req.body.isDone;
+
+    console.log('idcard:', idcard);
+    console.log('idlist:', idlist);
+    console.log('isDone:', isDone);
+
+    let criteria = {
+        '_id' : idcard,
+        'list._id': idlist
+    };
+
+    let update = {
+        "$set": {
+            'list.$.isDone': isDone
+        }
+    };
+
+    let option = { upsert: false };
+
+    todosModel.findOneAndUpdate(criteria, update, option, 
+        function (err, result) {
+            if (err) {
+                console.log('test errorrrrr');
+            }
+
+            if (result) {
+                console.log('should be success!');
+            }
+        }
+    );
+}
+
 exports.post_todo_delete_item = function(req, res, next) {
 
     // let Object for ease to read
@@ -137,7 +174,7 @@ exports.post_todo_delete_item = function(req, res, next) {
                  }
 
     // MongoDB's 'upsert' reference https://docs.mongodb.com/manual/reference/method/db.collection.update/
-    let option = {upsert: false} 
+    let option = {upsert: false}
     
     todosModel.findOneAndUpdate( query, update, option,
         function(err, result) {

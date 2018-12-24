@@ -9,6 +9,8 @@ ROUTING GUIDE:
 PLACE THE STATIC ROUTES AT TOP OF THE DYNAMIC ROUTES
 */
 
+router.post('/testupdate', todosController.testupdate);
+
 // GET list todos
 router.get('/todos', VerifyToken, todosController.get_todos_lists);
 
