@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import * as Types from '../constants/ActionTypes';
 import { authHeader } from '../modules/authHelper';
+import { types } from 'util';
 
 /*
     function Add Todo Card
@@ -115,3 +116,26 @@ export const toggleItemDone = (cardId, itemId, toggledvalue) => {
             });
     };
 };
+
+export const showDetailAction = (cardID,showDetailModal) => ({
+    type: Types.SHOW_DETAIL,
+    cardID: cardID,
+    modalVisible: showDetailModal
+})
+
+export const showDetail = (cardID, showDetailModal) => {
+    return (dispatch) => {
+        dispatch(showDetailAction(cardID, showDetailModal));
+    }
+}
+
+export const closeDetailAction = (closeDetailModal) => ({
+    type: Types.CLOSE_DETAIL,
+    modalVisible: closeDetailModal
+})
+
+export const closeDetail = (closeDetailModal) => {
+    return dispatch => {
+        dispatch(closeDetailAction(closeDetailModal));
+    }
+}

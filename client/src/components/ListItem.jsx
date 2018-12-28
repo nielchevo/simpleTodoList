@@ -12,7 +12,7 @@ const ListItem = ({cardID, itemList, deleteItemList, itemIsCompleted}) => {
                     {(item.isDone) ? <strike>{item.content}</strike> : item.content}
 
                     <div className="btn-wrapper">
-                        <button className="btn btn-primary" onClick={() => deleteItemList(cardID, item._id)}>
+                        <button className="btn btn-primary">
                             Delete !
                         </button>
                         <button className="btn btn-secondary" onClick={() => {

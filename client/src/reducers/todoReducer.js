@@ -1,7 +1,9 @@
 import * as Types from '../constants/ActionTypes';
 
 const initialState = {
-    todos: []
+    todos: [],
+    detailVisible: false,
+    detailItem: null
 }
 
 export default function todoReducer(state = initialState, action) {
@@ -36,7 +38,7 @@ export default function todoReducer(state = initialState, action) {
                 let todos = state.todos.filter(todo => {
                     return todo._id !== action.id
                 });
-                return {
+                return {...state,
                     todos
                 }
             }
@@ -45,7 +47,7 @@ export default function todoReducer(state = initialState, action) {
             return state;
         case Types.FETCH_TODO:
             return {
-                //...state, i wonder if this necessary
+                ...state, //i wonder if this necessary
                 todos: action.payload.todos
             }
         case Types.TOGGLE_ITEM:
@@ -60,8 +62,25 @@ export default function todoReducer(state = initialState, action) {
                         });
                     }
                 });
-                return {
+                return {...state,
                     todos
+                }
+            }
+        case Types.SHOW_DETAIL:
+            {
+                let list = state.todos.find(todo => {
+                    return todo._id === action.cardID
+                })
+
+                return {...state,
+                    detailVisible: true,
+                    detailItem: list
+                }
+            }
+        case Types.CLOSE_DETAIL:
+            {
+                return {...state,
+                    detailVisible: false,
                 }
             }
         default:
