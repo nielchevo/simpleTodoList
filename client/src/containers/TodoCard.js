@@ -21,111 +21,113 @@ class TodoCard extends React.Component {
         this.handleCloseModal = this.handleCloseModal.bind(this);
     }
 
-   handleOnTextChange(e) {
-      e.preventDefault();
-      this.setState({inputItemList: e.target.value});
-   }
+    handleOnTextChange(e) {
+        e.preventDefault();
+        this.setState({ inputItemList: e.target.value });
+    }
 
-   handleOnSubmit(e) {
-      e.preventDefault();
-   }
+    handleOnSubmit(e) {
+        e.preventDefault();
+    }
 
-   handleDeleteItem(cardID, itemID) {
-      // Dispatch to redux with card object ID and list item. 
-      //console.log('handleDeletItem: ', cardID, itemID);
+    handleDeleteItem(cardID, itemID) {
+        // Dispatch to redux with card object ID and list item. 
+        //console.log('handleDeletItem: ', cardID, itemID);
 
-      this.props.onDeleteItemList(cardID, itemID);
-   }
+        this.props.onDeleteItemList(cardID, itemID);
+    }
 
-   handleDeleteCard(cardID, showDetailModal) {
-      //console.log('handleDeleteCard: ', cardID);
+    handleDeleteCard(cardID, showDetailModal) {
+        //console.log('handleDeleteCard: ', cardID);
 
-      this.props.onDeleteCard(cardID);
-   }
+        this.props.onDeleteCard(cardID);
+    }
 
-   handleItemIsDone(cardID, itemID, toggledvalue) {
+    handleItemIsDone(cardID, itemID, toggledvalue) {
         //console.log('handleItemIsDone itemID: ', itemID);     
 
         this.props.onToggleItemDone(cardID, itemID, toggledvalue);
-   }
-    
-   handleCloseModal(closeDetailModal) {
-       this.props.onCloseModal(closeDetailModal);
-   }
+    }
 
-   handleShowDetail(cardID, showDetailModal) {
-      this.props.onShowDetaild(cardID, showDetailModal);
-   }
+    handleCloseModal(closeDetailModal) {
+        this.props.onCloseModal(closeDetailModal);
+    }
 
-   handleModalDetail() {
-      return (
-         <ModalPopup
-            show={this.props.detailVisible}
-            handleCloseModal={this.handleCloseModal}
-            itemList={this.props.detailItem}
-         />
-      )
-   }
+    handleShowDetail(cardID, showDetailModal) {
+        this.props.onShowDetaild(cardID, showDetailModal);
+    }
 
-   onRenderListItem() {         
-       if (this.props.todos.length) {
-           
+    handleModalDetail() {
+        if (this.props.detailVisible) {
+            return (
+                <ModalPopup
+                    show={this.props.detailVisible}
+                    handleCloseModal={this.handleCloseModal}
+                    itemList={this.props.detailItem}
+                />
+            )
+        }
+    }
+
+    onRenderListItem() {
+        if (this.props.todos.length) {
+
             let renderList = this.props.todos.map(item => {
-               return (
-                     <div className="card border-primary mb-3" key={item._id}>
+                return (
+                    <div className="card border-primary mb-3" key={item._id}>
                         <div className="card-header">
-                              <h4 className="card-title">{item.title}</h4>
-                              <button className="btn btn-primary" onClick={ () => this.handleDeleteCard(item._id) }> 
-                                 Delete Card 
+                            <h4 className="card-title">{item.title}</h4>
+                            <button className="btn btn-primary" onClick={() => this.handleDeleteCard(item._id)}>
+                                Delete Card
                               </button>
-                              <button className="btn btn-primary" onClick={ () => this.handleShowDetail(item._id, true) }> 
-                                 Detail
+                            <button className="btn btn-primary" onClick={() => this.handleShowDetail(item._id, true)}>
+                                Detail
                               </button>
                         </div>
-                     
+
                         <ListItem
-                           cardID={item._id}
-                           itemList={item.list} 
-                           deleteItemList={this.handleDeleteItem}
-                           itemIsCompleted={this.handleItemIsDone}
+                            cardID={item._id}
+                            itemList={item.list}
+                            deleteItemList={this.handleDeleteItem}
+                            itemIsCompleted={this.handleItemIsDone}
                         />
 
-                        <form className="form-group" id={item._id} onSubmit={ this.handleOnSubmit}>
-                              <input className="form-control"
-                              onChange={ this.handleOnTextChange }/>
+                        <form className="form-group" id={item._id} onSubmit={this.handleOnSubmit}>
+                            <input className="form-control"
+                                onChange={this.handleOnTextChange} />
                         </form>
-                     </div>
-               )
+                    </div>
+                )
             });
 
             return (
-                  renderList
+                renderList
             )
-      } else {
+        } else {
             return (
-                  <div className="center">No Todo</div>
+                <div className="center">No Todo</div>
             )
-      }      
-   }
+        }
+    }
 
-   render() {
-      return(
-         <div className="wrapper-card">
-            <h1>todoCard</h1>
-            {this.onRenderListItem()}
-            {this.handleModalDetail()}
-         </div>
-      )
-   }
+    render() {
+        return (
+            <div className="wrapper-card">
+                <h1>todoCard</h1>
+                {this.onRenderListItem()}
+                {this.handleModalDetail()}
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
-   return { 
-      todos: state.todo.todos,
-      detailVisible: state.todo.detailVisible,
-      detailItem: state.todo.detailItem
-   }
-} 
+    return {
+        todos: state.todo.todos,
+        detailVisible: state.todo.detailVisible,
+        detailItem: state.todo.detailItem
+    }
+}
 
 const mapDispatchToProps = dispatch => {
     return {
