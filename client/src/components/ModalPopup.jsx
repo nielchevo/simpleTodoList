@@ -1,13 +1,16 @@
 import React from 'react';
 import Modal from 'react-awesome-modal';
 
-const ModalPopup = ({show, handleCloseModal, itemList}) => {
+const ModalPopup = ({ show, handleCloseModal, itemList }) => {
+    let title;
     let list;
 
-    if (itemList){
+    title = (itemList && itemList.title) ? itemList.title : "No title";
+
+    if (itemList) {
         list = itemList.list.map(item => {
             return (
-                item.content
+                <li key={item._id}>{item.content}</li>                
             )
         })
     }
@@ -16,7 +19,8 @@ const ModalPopup = ({show, handleCloseModal, itemList}) => {
         <section>
             <Modal visible={show} width="800" height="600" effect="fadeInUp" onClickAway={() => handleCloseModal(false)}>
                 <div>
-                    <p><li>{list}</li></p>
+                    <h3>{title}</h3>
+                    <ul>{list}</ul>
                     <button onClick={() => handleCloseModal(false)}>Close</button>
                 </div>
             </Modal>

@@ -47,11 +47,11 @@ class TodoCard extends React.Component {
         //console.log('handleItemIsDone itemID: ', itemID);     
 
         this.props.onToggleItemDone(cardID, itemID, toggledvalue);
-    }
+   }
     
    handleCloseModal(closeDetailModal) {
        this.props.onCloseModal(closeDetailModal);
-    }
+   }
 
    handleShowDetail(cardID, showDetailModal) {
       this.props.onShowDetaild(cardID, showDetailModal);
